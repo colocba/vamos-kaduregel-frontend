@@ -26,7 +26,23 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // ----- matches (rules added in Task 36) -----
+    // ----- matches -----
+    match /matches/{matchId} {
+      allow read: if isSignedIn();
+      allow create, delete: if isAdmin();
+      // Admin can update anything; signed-in users can only adjust paidCount/status
+      // as part of their own join/cancel transaction.
+      allow update: if isAdmin() || (
+        isSignedIn() &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['paidCount', 'status']) &&
+        (
+          (request.resource.data.status == 'open' && request.resource.data.paidCount < resource.data.playerLimit) ||
+          (request.resource.data.status == 'closed' && request.resource.data.paidCount == resource.data.playerLimit) ||
+          request.resource.data.status == resource.data.status
+        )
+      );
+    }
+
     // ----- participants (rules added in Task 37) -----
   }
 }

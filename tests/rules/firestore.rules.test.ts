@@ -88,3 +88,31 @@ describeIfEmu("users rules", () => {
     );
   });
 });
+
+describeIfEmu("matches rules", () => {
+  it("any signed-in user can read matches", async () => {
+    await env.withSecurityRulesDisabled(async (c) =>
+      c.firestore().collection("matches").doc("m1").set({ status: "open" }),
+    );
+    const ctx = env.authenticatedContext("u1");
+    await assertSucceeds(ctx.firestore().collection("matches").doc("m1").get());
+  });
+
+  it("non-admins cannot create matches", async () => {
+    const ctx = env.authenticatedContext("u1");
+    await env.withSecurityRulesDisabled(async (c) =>
+      c.firestore().collection("users").doc("u1").set({ isAdmin: false }),
+    );
+    await assertFails(ctx.firestore().collection("matches").doc("m1").set({ status: "open" }));
+  });
+
+  it("admin can create matches", async () => {
+    await env.withSecurityRulesDisabled(async (c) =>
+      c.firestore().collection("users").doc("admin1").set({ isAdmin: true }),
+    );
+    const ctx = env.authenticatedContext("admin1");
+    await assertSucceeds(
+      ctx.firestore().collection("matches").doc("m1").set({ status: "open" }),
+    );
+  });
+});
