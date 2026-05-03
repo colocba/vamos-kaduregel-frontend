@@ -25,6 +25,11 @@ export function Header() {
             {t("admin.createMatch")}
           </Link>
         )}
+        {auth.status === "signedIn" && isAdmin && (
+          <Link to="/admin/users" className="text-sm text-slate-700 hover:underline">
+            {t("admin.users")}
+          </Link>
+        )}
         <LanguageSwitcher />
         {auth.status === "signedIn" && (
           <button

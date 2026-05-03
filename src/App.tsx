@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { AdminRoute } from "./admin/AdminRoute";
 import { CreateMatchPage } from "./pages/admin/CreateMatch";
 import { ManageMatchPage } from "./pages/admin/ManageMatch";
+import { UsersListPage } from "./pages/admin/UsersList";
 import { useAuth } from "./auth/useAuth";
 
 function LoginGate() {
@@ -33,6 +34,7 @@ export default function App() {
               <Route element={<AdminRoute />}>
                 <Route path="/admin/create" element={<CreateMatchPage />} />
                 <Route path="/admin/match/:id" element={<ManageMatchPage />} />
+                <Route path="/admin/users" element={<UsersListPage />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFoundPage />} />
