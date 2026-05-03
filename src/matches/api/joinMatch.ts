@@ -1,4 +1,4 @@
-import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
+import { collection, doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/client";
 import type { MatchDoc } from "../../types/match";
 import type { ParticipantDoc } from "../../types/participant";
@@ -8,11 +8,14 @@ export type JoinMatchInput = {
   uid: string;
   name: string;
   isAdmin: boolean;
+  guestName?: string;
 };
 
 export async function joinMatch(input: JoinMatchInput): Promise<void> {
   const matchRef = doc(db, "matches", input.matchId);
   const partRef = doc(db, "matches", input.matchId, "participants", input.uid);
+  const wantGuest = !!input.guestName?.trim();
+  const guestRef = wantGuest ? doc(collection(db, "matches", input.matchId, "participants")) : null;
 
   await runTransaction(db, async (tx) => {
     const matchSnap = await tx.get(matchRef);
@@ -20,12 +23,13 @@ export async function joinMatch(input: JoinMatchInput): Promise<void> {
     const match = matchSnap.data() as MatchDoc;
 
     if (match.status !== "open") throw new Error("Match is not open");
-    if (match.paidCount + 1 > match.playerLimit) throw new Error("Match is full");
+    const slots = wantGuest ? 2 : 1;
+    if (match.paidCount + slots > match.playerLimit) throw new Error("Match is full");
 
     const existing = await tx.get(partRef);
     if (existing.exists()) throw new Error("You already paid");
 
-    const participant: ParticipantDoc = {
+    const self: ParticipantDoc = {
       paidByUid: input.uid,
       paidByName: input.name,
       isGuest: false,
@@ -35,9 +39,23 @@ export async function joinMatch(input: JoinMatchInput): Promise<void> {
       verifiedBy: input.isAdmin ? input.uid : null,
       paidAt: serverTimestamp() as never,
     };
-    tx.set(partRef, participant);
+    tx.set(partRef, self);
 
-    const newCount = match.paidCount + 1;
+    if (guestRef && wantGuest) {
+      const guest: ParticipantDoc = {
+        paidByUid: input.uid,
+        paidByName: input.name,
+        isGuest: true,
+        guestName: input.guestName!.trim(),
+        team: null,
+        verified: input.isAdmin,
+        verifiedBy: input.isAdmin ? input.uid : null,
+        paidAt: serverTimestamp() as never,
+      };
+      tx.set(guestRef, guest);
+    }
+
+    const newCount = match.paidCount + slots;
     const updates: Partial<MatchDoc> = { paidCount: newCount };
     if (newCount === match.playerLimit) updates.status = "closed";
     tx.update(matchRef, updates);

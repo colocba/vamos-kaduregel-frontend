@@ -77,3 +77,31 @@ describeIfEmu("joinMatch (self only)", () => {
     ).rejects.toThrow(/full|closed/i);
   });
 });
+
+describeIfEmu("joinMatch with guest", () => {
+  beforeEach(clearMatches);
+
+  it("creates self + guest, +2 to count", async () => {
+    const ref = await addDoc(collection(db, "matches"), baseMatch());
+    await joinMatch({
+      matchId: ref.id, uid: "u1", name: "Alice", isAdmin: false, guestName: "Mr Guest",
+    });
+    const updated = (await getDoc(ref)).data();
+    expect(updated?.paidCount).toBe(2);
+
+    const parts = await getDocs(collection(db, "matches", ref.id, "participants"));
+    const guests = parts.docs.filter((d) => d.data().isGuest);
+    expect(guests).toHaveLength(1);
+    expect(guests[0].data().guestName).toBe("Mr Guest");
+    expect(guests[0].data().paidByUid).toBe("u1");
+  });
+
+  it("rejects when only 1 slot remains and a guest is requested", async () => {
+    const ref = await addDoc(collection(db, "matches"), baseMatch({
+      playerLimit: 12, paidCount: 11,
+    }));
+    await expect(
+      joinMatch({ matchId: ref.id, uid: "u1", name: "A", isAdmin: false, guestName: "G" }),
+    ).rejects.toThrow(/full/i);
+  });
+});
