@@ -13,6 +13,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "firebase": "^10.14.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
