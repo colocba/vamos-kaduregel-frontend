@@ -16,9 +16,7 @@ export function useMatch(matchId: string | null): UseMatchResult {
     return onSnapshot(doc(db, "matches", matchId), (snap) => {
       setLoaded({
         matchId,
-        match: snap.exists()
-          ? { id: snap.id, ...(snap.data() as MatchDoc) }
-          : null,
+        match: snap.exists() ? { id: snap.id, ...(snap.data() as MatchDoc) } : null,
       });
     });
   }, [matchId]);

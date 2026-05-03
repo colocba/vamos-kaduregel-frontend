@@ -111,9 +111,7 @@ describeIfEmu("matches rules", () => {
       c.firestore().collection("users").doc("admin1").set({ isAdmin: true }),
     );
     const ctx = env.authenticatedContext("admin1");
-    await assertSucceeds(
-      ctx.firestore().collection("matches").doc("m1").set({ status: "open" }),
-    );
+    await assertSucceeds(ctx.firestore().collection("matches").doc("m1").set({ status: "open" }));
   });
 });
 

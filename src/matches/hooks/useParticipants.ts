@@ -21,10 +21,7 @@ export function useParticipants(matchId: string | null): UseParticipantsResult {
 
   useEffect(() => {
     if (!matchId) return;
-    const q = query(
-      collection(db, "matches", matchId, "participants"),
-      orderBy("paidAt", "asc"),
-    );
+    const q = query(collection(db, "matches", matchId, "participants"), orderBy("paidAt", "asc"));
     return onSnapshot(q, (snap) => {
       setLoaded({
         matchId,

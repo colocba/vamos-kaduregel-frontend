@@ -17,8 +17,14 @@ export function ParticipantRow({ participant: p, canCancel, onCancel }: Particip
     <li className="flex items-center justify-between rounded bg-white p-2 shadow-sm">
       <div className="flex items-center gap-2">
         <span>{label}</span>
-        {p.verified && <span aria-label={t("match.verified")} className="text-emerald-600">✓</span>}
-        {p.team && <span className="text-sm text-slate-500">· {t("match.team", { n: p.team })}</span>}
+        {p.verified && (
+          <span aria-label={t("match.verified")} className="text-emerald-600">
+            ✓
+          </span>
+        )}
+        {p.team && (
+          <span className="text-sm text-slate-500">· {t("match.team", { n: p.team })}</span>
+        )}
       </div>
       {canCancel && onCancel && (
         <button onClick={onCancel} className="text-sm text-red-600">

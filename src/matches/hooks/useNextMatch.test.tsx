@@ -1,12 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  getDocs,
-  Timestamp,
-} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDocs, Timestamp } from "firebase/firestore";
 import { connectEmulatorsOnce } from "../../firebase/emulator";
 import { db } from "../../firebase/client";
 import { useNextMatch } from "./useNextMatch";

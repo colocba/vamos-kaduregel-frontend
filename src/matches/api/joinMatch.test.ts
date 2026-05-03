@@ -1,6 +1,13 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
-  addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, Timestamp,
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { connectEmulatorsOnce } from "../../firebase/emulator";
 import { db } from "../../firebase/client";
@@ -57,10 +64,19 @@ describeIfEmu("joinMatch (self only)", () => {
   });
 
   it("flips status to closed when limit hit", async () => {
-    const ref = await addDoc(collection(db, "matches"), baseMatch({ playerLimit: 2, paidCount: 1 }));
+    const ref = await addDoc(
+      collection(db, "matches"),
+      baseMatch({ playerLimit: 2, paidCount: 1 }),
+    );
     await setDoc(doc(db, "matches", ref.id, "participants", "other"), {
-      paidByUid: "other", paidByName: "O", isGuest: false, guestName: null,
-      team: null, verified: false, verifiedBy: null, paidAt: Timestamp.now(),
+      paidByUid: "other",
+      paidByName: "O",
+      isGuest: false,
+      guestName: null,
+      team: null,
+      verified: false,
+      verifiedBy: null,
+      paidAt: Timestamp.now(),
     });
     await joinMatch({ matchId: ref.id, uid: "u2", name: "Bob", isAdmin: false });
     const updated = (await getDoc(ref)).data();
@@ -69,9 +85,14 @@ describeIfEmu("joinMatch (self only)", () => {
   });
 
   it("rejects when match is full", async () => {
-    const ref = await addDoc(collection(db, "matches"), baseMatch({
-      playerLimit: 1, paidCount: 1, status: "closed",
-    }));
+    const ref = await addDoc(
+      collection(db, "matches"),
+      baseMatch({
+        playerLimit: 1,
+        paidCount: 1,
+        status: "closed",
+      }),
+    );
     await expect(
       joinMatch({ matchId: ref.id, uid: "u3", name: "C", isAdmin: false }),
     ).rejects.toThrow(/full|closed/i);
@@ -84,7 +105,11 @@ describeIfEmu("joinMatch with guest", () => {
   it("creates self + guest, +2 to count", async () => {
     const ref = await addDoc(collection(db, "matches"), baseMatch());
     await joinMatch({
-      matchId: ref.id, uid: "u1", name: "Alice", isAdmin: false, guestName: "Mr Guest",
+      matchId: ref.id,
+      uid: "u1",
+      name: "Alice",
+      isAdmin: false,
+      guestName: "Mr Guest",
     });
     const updated = (await getDoc(ref)).data();
     expect(updated?.paidCount).toBe(2);
@@ -97,9 +122,13 @@ describeIfEmu("joinMatch with guest", () => {
   });
 
   it("rejects when only 1 slot remains and a guest is requested", async () => {
-    const ref = await addDoc(collection(db, "matches"), baseMatch({
-      playerLimit: 12, paidCount: 11,
-    }));
+    const ref = await addDoc(
+      collection(db, "matches"),
+      baseMatch({
+        playerLimit: 12,
+        paidCount: 11,
+      }),
+    );
     await expect(
       joinMatch({ matchId: ref.id, uid: "u1", name: "A", isAdmin: false, guestName: "G" }),
     ).rejects.toThrow(/full/i);

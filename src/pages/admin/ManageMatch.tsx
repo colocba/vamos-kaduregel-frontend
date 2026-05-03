@@ -199,10 +199,7 @@ export function ManageMatchPage() {
                   assignTeam({
                     matchId: match.id,
                     participantId: p.id,
-                    team:
-                      e.target.value === ""
-                        ? null
-                        : (Number(e.target.value) as 1 | 2 | 3 | 4),
+                    team: e.target.value === "" ? null : (Number(e.target.value) as 1 | 2 | 3 | 4),
                   })
                 }
                 className="rounded border p-1 text-sm"

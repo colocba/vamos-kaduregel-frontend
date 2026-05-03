@@ -1,8 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import {
-  initializeTestEnvironment,
-  type RulesTestEnvironment,
-} from "@firebase/rules-unit-testing";
+import { initializeTestEnvironment, type RulesTestEnvironment } from "@firebase/rules-unit-testing";
 import { doc, runTransaction, serverTimestamp, Timestamp } from "firebase/firestore";
 import fs from "fs";
 import path from "path";
@@ -25,19 +22,23 @@ beforeEach(async () => {
   await env.clearFirestore();
   await env.withSecurityRulesDisabled(async (c) => {
     await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
-    await c.firestore().collection("matches").doc("m1").set({
-      date: Timestamp.fromMillis(Date.now() + 60_000),
-      location: "X",
-      numFields: 1,
-      playerLimit: 12,
-      pricePerPlayer: 0,
-      paymentLink: "",
-      notes: "",
-      status: "open",
-      paidCount: 0,
-      createdBy: "admin1",
-      createdAt: Timestamp.now(),
-    });
+    await c
+      .firestore()
+      .collection("matches")
+      .doc("m1")
+      .set({
+        date: Timestamp.fromMillis(Date.now() + 60_000),
+        location: "X",
+        numFields: 1,
+        playerLimit: 12,
+        pricePerPlayer: 0,
+        paymentLink: "",
+        notes: "",
+        status: "open",
+        paidCount: 0,
+        createdBy: "admin1",
+        createdAt: Timestamp.now(),
+      });
   });
 });
 

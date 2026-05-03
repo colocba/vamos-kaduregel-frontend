@@ -34,11 +34,7 @@ export function UsersListPage() {
               <p className="text-xs text-slate-500">{r.email}</p>
             </div>
             <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={r.isAdmin}
-                onChange={() => toggle(r.id, r.isAdmin)}
-              />
+              <input type="checkbox" checked={r.isAdmin} onChange={() => toggle(r.id, r.isAdmin)} />
               admin
             </label>
           </li>

@@ -1,6 +1,13 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
-  addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, Timestamp,
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { connectEmulatorsOnce } from "../../firebase/emulator";
 import { db } from "../../firebase/client";
@@ -24,16 +31,34 @@ describeIfEmu("addGuest", () => {
 
   it("adds one guest, +1 to count", async () => {
     const ref = await addDoc(collection(db, "matches"), {
-      date: Timestamp.fromMillis(Date.now() + 60_000), location: "X",
-      numFields: 1, playerLimit: 12, pricePerPlayer: 0, paymentLink: "",
-      notes: "", status: "open", paidCount: 1, createdBy: "a", createdAt: Timestamp.now(),
+      date: Timestamp.fromMillis(Date.now() + 60_000),
+      location: "X",
+      numFields: 1,
+      playerLimit: 12,
+      pricePerPlayer: 0,
+      paymentLink: "",
+      notes: "",
+      status: "open",
+      paidCount: 1,
+      createdBy: "a",
+      createdAt: Timestamp.now(),
     });
     await setDoc(doc(db, "matches", ref.id, "participants", "u1"), {
-      paidByUid: "u1", paidByName: "Alice", isGuest: false, guestName: null,
-      team: null, verified: false, verifiedBy: null, paidAt: Timestamp.now(),
+      paidByUid: "u1",
+      paidByName: "Alice",
+      isGuest: false,
+      guestName: null,
+      team: null,
+      verified: false,
+      verifiedBy: null,
+      paidAt: Timestamp.now(),
     });
     await addGuest({
-      matchId: ref.id, uid: "u1", name: "Alice", guestName: "Bob", isAdmin: false,
+      matchId: ref.id,
+      uid: "u1",
+      name: "Alice",
+      guestName: "Bob",
+      isAdmin: false,
     });
     const updated = (await getDoc(ref)).data();
     expect(updated?.paidCount).toBe(2);
