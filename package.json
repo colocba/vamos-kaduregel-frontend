@@ -11,6 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
+    "test:emu": "VITE_USE_FIREBASE_EMULATORS=true vitest run",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "emulators": "firebase emulators:start",
