@@ -5,6 +5,10 @@ import { connectEmulatorsOnce } from "../firebase/emulator";
 import { db } from "../firebase/client";
 import { ensureUserDoc } from "./ensureUserDoc";
 
+// These tests need the Firestore + Auth emulators running. Run them via
+// `npm run test:emu` (requires Java + firebase-tools). When CI is set up,
+// it MUST run `test:emu` against the emulator — otherwise this suite
+// silently skips and the no-overwrite contract goes unverified.
 const useEmulators = import.meta.env.VITE_USE_FIREBASE_EMULATORS === "true";
 const describeIfEmu = useEmulators ? describe : describe.skip;
 

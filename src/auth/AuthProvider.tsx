@@ -10,14 +10,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({ status: "loading" });
 
   useEffect(() => {
-    return onAuthStateChanged(auth, async (user) => {
+    let cancelled = false;
+    const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         await ensureUserDoc(user, (i18n.resolvedLanguage ?? "he") as Locale);
-        setState({ status: "signedIn", user });
-      } else {
+        if (!cancelled) setState({ status: "signedIn", user });
+      } else if (!cancelled) {
         setState({ status: "signedOut" });
       }
     });
+    return () => {
+      cancelled = true;
+      unsub();
+    };
   }, []);
 
   return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;

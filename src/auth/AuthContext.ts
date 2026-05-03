@@ -6,4 +6,4 @@ export type AuthState =
   | { status: "signedOut" }
   | { status: "signedIn"; user: User };
 
-export const AuthContext = createContext<AuthState>({ status: "loading" });
+export const AuthContext = createContext<AuthState | null>(null);
