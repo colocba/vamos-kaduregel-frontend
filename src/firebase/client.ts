@@ -16,5 +16,6 @@ export const auth: Auth = getAuth(app);
 export const db: Firestore = getFirestore(app);
 
 if (import.meta.env.VITE_USE_FIREBASE_EMULATORS === "true") {
+  // dynamic import keeps emulator code out of the production bundle
   import("./emulator").then(({ connectEmulatorsOnce }) => connectEmulatorsOnce());
 }
