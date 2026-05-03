@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { SUPPORTED_LOCALES, type Locale } from "../constants";
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type Locale } from "../constants";
 
 const LABELS: Record<Locale, string> = { he: "עברית", es: "Español", en: "English" };
 
 export function LanguageSwitcher() {
   const { i18n, t } = useTranslation();
-  const current = (i18n.resolvedLanguage ?? "he") as Locale;
+  const current = (i18n.resolvedLanguage ?? DEFAULT_LOCALE) as Locale;
 
   return (
     <label className="flex items-center gap-2 text-sm">

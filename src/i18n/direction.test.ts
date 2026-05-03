@@ -1,5 +1,10 @@
 import { directionFor, syncHtmlDirAndLang } from "./direction";
 
+afterEach(() => {
+  document.documentElement.dir = "";
+  document.documentElement.lang = "";
+});
+
 describe("directionFor", () => {
   it("returns rtl for he", () => expect(directionFor("he")).toBe("rtl"));
   it("returns ltr for es", () => expect(directionFor("es")).toBe("ltr"));
