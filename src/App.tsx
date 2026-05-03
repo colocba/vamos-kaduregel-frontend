@@ -1,22 +1,33 @@
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthProvider";
 import { Header } from "./components/Header";
 import { LoginPage } from "./pages/Login";
+import { HomePage } from "./pages/Home";
+import { NotFoundPage } from "./pages/NotFound";
+import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { useAuth } from "./auth/useAuth";
 
-function Body() {
+function LoginGate() {
   const auth = useAuth();
-  if (auth.status === "loading") return <p className="p-4">…</p>;
-  if (auth.status === "signedOut") return <LoginPage />;
-  return <p className="p-4">Signed in as {auth.user.displayName}</p>;
+  if (auth.status === "signedIn") return <Navigate to="/" replace />;
+  return <LoginPage />;
 }
 
 export default function App() {
   return (
     <AuthProvider>
-      <div className="flex min-h-full flex-col">
-        <Header />
-        <Body />
-      </div>
+      <BrowserRouter>
+        <div className="flex min-h-full flex-col">
+          <Header />
+          <Routes>
+            <Route path="/login" element={<LoginGate />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<HomePage />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </AuthProvider>
   );
 }
