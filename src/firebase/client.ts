@@ -14,3 +14,7 @@ const config = {
 export const app: FirebaseApp = initializeApp(config);
 export const auth: Auth = getAuth(app);
 export const db: Firestore = getFirestore(app);
+
+if (import.meta.env.VITE_USE_FIREBASE_EMULATORS === "true") {
+  import("./emulator").then(({ connectEmulatorsOnce }) => connectEmulatorsOnce());
+}
