@@ -10,7 +10,7 @@ import { RosterList } from "../components/RosterList";
 export function HomePage() {
   const { t } = useTranslation();
   const auth = useAuth();
-  const isAdmin = useIsAdmin();
+  const { isAdmin } = useIsAdmin();
   const { loading, match } = useNextMatch();
   const { participants } = useParticipants(match?.id ?? null);
 

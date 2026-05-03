@@ -9,7 +9,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 export function Header() {
   const { t } = useTranslation();
   const auth = useAuth();
-  const isAdmin = useIsAdmin();
+  const { isAdmin } = useIsAdmin();
 
   return (
     <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">

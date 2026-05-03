@@ -8,7 +8,9 @@ type LoadedState = {
   isAdmin: boolean;
 };
 
-export function useIsAdmin(): boolean {
+export type UseIsAdminResult = { loading: boolean; isAdmin: boolean };
+
+export function useIsAdmin(): UseIsAdminResult {
   const auth = useAuth();
   const uid = auth.status === "signedIn" ? auth.user.uid : null;
   const [loaded, setLoaded] = useState<LoadedState>({ uid: null, isAdmin: false });
@@ -23,7 +25,7 @@ export function useIsAdmin(): boolean {
     });
   }, [uid]);
 
-  if (uid === null) return false;
-  if (loaded.uid !== uid) return false;
-  return loaded.isAdmin;
+  if (uid === null) return { loading: false, isAdmin: false };
+  if (loaded.uid !== uid) return { loading: true, isAdmin: false };
+  return { loading: false, isAdmin: loaded.isAdmin };
 }
