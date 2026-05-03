@@ -113,6 +113,96 @@ describeIfEmu("matches rules", () => {
     const ctx = env.authenticatedContext("admin1");
     await assertSucceeds(ctx.firestore().collection("matches").doc("m1").set({ status: "open" }));
   });
+
+  it("non-admin can increment paidCount by 1 (open match)", async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
+      await c
+        .firestore()
+        .collection("matches")
+        .doc("m1")
+        .set({ status: "open", paidCount: 0, playerLimit: 12 });
+    });
+    const ctx = env.authenticatedContext("u1");
+    await assertSucceeds(
+      ctx.firestore().collection("matches").doc("m1").update({ paidCount: 1, status: "open" }),
+    );
+  });
+
+  it("non-admin can increment paidCount by 2 (self+guest)", async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
+      await c
+        .firestore()
+        .collection("matches")
+        .doc("m1")
+        .set({ status: "open", paidCount: 0, playerLimit: 12 });
+    });
+    const ctx = env.authenticatedContext("u1");
+    await assertSucceeds(
+      ctx.firestore().collection("matches").doc("m1").update({ paidCount: 2, status: "open" }),
+    );
+  });
+
+  it("non-admin cannot set paidCount to an arbitrary value", async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
+      await c
+        .firestore()
+        .collection("matches")
+        .doc("m1")
+        .set({ status: "open", paidCount: 0, playerLimit: 12 });
+    });
+    const ctx = env.authenticatedContext("u1");
+    await assertFails(
+      ctx.firestore().collection("matches").doc("m1").update({ paidCount: 99, status: "open" }),
+    );
+  });
+
+  it("non-admin cannot DoS by closing the match prematurely", async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
+      await c
+        .firestore()
+        .collection("matches")
+        .doc("m1")
+        .set({ status: "open", paidCount: 0, playerLimit: 12 });
+    });
+    const ctx = env.authenticatedContext("u1");
+    await assertFails(
+      ctx.firestore().collection("matches").doc("m1").update({ paidCount: 12, status: "closed" }),
+    );
+  });
+
+  it("non-admin cannot resurrect a cancelled match", async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
+      await c
+        .firestore()
+        .collection("matches")
+        .doc("m1")
+        .set({ status: "cancelled", paidCount: 0, playerLimit: 12 });
+    });
+    const ctx = env.authenticatedContext("u1");
+    await assertFails(
+      ctx.firestore().collection("matches").doc("m1").update({ status: "open", paidCount: 0 }),
+    );
+  });
+
+  it("non-admin can decrement paidCount by 1 and reopen a closed match", async () => {
+    await env.withSecurityRulesDisabled(async (c) => {
+      await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
+      await c
+        .firestore()
+        .collection("matches")
+        .doc("m1")
+        .set({ status: "closed", paidCount: 12, playerLimit: 12 });
+    });
+    const ctx = env.authenticatedContext("u1");
+    await assertSucceeds(
+      ctx.firestore().collection("matches").doc("m1").update({ paidCount: 11, status: "open" }),
+    );
+  });
 });
 
 describeIfEmu("participants rules", () => {
