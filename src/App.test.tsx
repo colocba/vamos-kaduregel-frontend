@@ -1,9 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
+import "./i18n";
+import { APP_NAME } from "./constants";
 
 describe("App", () => {
   it("renders the app name", () => {
     render(<App />);
-    expect(screen.getByRole("heading", { name: /vamos kaduregel/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: APP_NAME })).toBeInTheDocument();
   });
 });

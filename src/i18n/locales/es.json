@@ -1,0 +1,39 @@
+{
+  "auth": { "signIn": "Iniciar sesión con Google", "signOut": "Cerrar sesión" },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "match": {
+    "noUpcoming": "No hay partido programado",
+    "open": "Inscripción abierta",
+    "closed": "Completo",
+    "cancelled": "Cancelado",
+    "openPaymentLink": "Abrir link de pago",
+    "iPaid": "Ya pagué",
+    "addGuest": "Agregar invitado",
+    "payForGuest": "Pagar por un invitado",
+    "cancelMySpot": "Cancelar mi lugar",
+    "cancelGuest": "Cancelar invitado: {{name}}",
+    "guestOf": "Invitado de {{name}}",
+    "team": "Equipo {{n}}",
+    "verified": "Verificado"
+  },
+  "admin": {
+    "createMatch": "Crear partido",
+    "manageMatch": "Gestionar partido",
+    "users": "Usuarios",
+    "verifyToggle": "Verificado",
+    "closeMatch": "Cerrar inscripción",
+    "reopenMatch": "Reabrir",
+    "cancelMatch": "Cancelar partido",
+    "fields": "Cantidad de canchas",
+    "price": "Precio por jugador",
+    "paymentLink": "Link de pago",
+    "notes": "Notas",
+    "location": "Lugar"
+  },
+  "language": { "switcher": "Idioma" }
+}

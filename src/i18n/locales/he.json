@@ -1,0 +1,34 @@
+{
+  "auth": { "signIn": "התחברות עם Google", "signOut": "התנתקות" },
+  "common": { "loading": "טוען...", "error": "אירעה שגיאה", "cancel": "ביטול", "save": "שמירה" },
+  "match": {
+    "noUpcoming": "אין משחק מתוכנן",
+    "open": "פתוח לרישום",
+    "closed": "מלא",
+    "cancelled": "בוטל",
+    "openPaymentLink": "פתח קישור תשלום",
+    "iPaid": "שילמתי",
+    "addGuest": "הוסף אורח",
+    "payForGuest": "שלם עבור אורח",
+    "cancelMySpot": "ביטול ההשתתפות שלי",
+    "cancelGuest": "ביטול אורח: {{name}}",
+    "guestOf": "אורח של {{name}}",
+    "team": "קבוצה {{n}}",
+    "verified": "אומת"
+  },
+  "admin": {
+    "createMatch": "יצירת משחק",
+    "manageMatch": "ניהול משחק",
+    "users": "משתמשים",
+    "verifyToggle": "אומת",
+    "closeMatch": "סגירת רישום",
+    "reopenMatch": "פתיחה מחדש",
+    "cancelMatch": "ביטול משחק",
+    "fields": "מספר מגרשים",
+    "price": "מחיר לשחקן",
+    "paymentLink": "קישור תשלום",
+    "notes": "הערות",
+    "location": "מיקום"
+  },
+  "language": { "switcher": "שפה" }
+}
