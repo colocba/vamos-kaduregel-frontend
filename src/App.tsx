@@ -1,14 +1,19 @@
+import { AuthProvider } from "./auth/AuthProvider";
 import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import { APP_NAME } from "./constants";
 
 export default function App() {
   const { t } = useTranslation();
   return (
-    <main className="flex min-h-full items-center justify-center p-4">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold">{APP_NAME}</h1>
-        <p className="mt-2 text-slate-600">{t("match.noUpcoming")}</p>
-      </div>
-    </main>
+    <AuthProvider>
+      <main className="min-h-full p-4">
+        <header className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">{APP_NAME}</h1>
+          <LanguageSwitcher />
+        </header>
+        <p className="mt-8 text-center text-slate-600">{t("match.noUpcoming")}</p>
+      </main>
+    </AuthProvider>
   );
 }
