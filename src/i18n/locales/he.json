@@ -28,7 +28,8 @@
     "price": "מחיר לשחקן",
     "paymentLink": "קישור תשלום",
     "notes": "הערות",
-    "location": "מיקום"
+    "location": "מיקום",
+    "editDetails": "עריכת פרטים"
   },
   "language": { "switcher": "שפה" },
   "nav": { "past": "משחקים קודמים" }

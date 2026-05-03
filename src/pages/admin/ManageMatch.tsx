@@ -36,7 +36,7 @@ function EditPanel({ match }: { match: Match }) {
         onClick={() => setOpen(true)}
         className="rounded border px-3 py-1 text-sm"
       >
-        {t("common.save")}
+        {t("admin.editDetails")}
       </button>
     );
   }

@@ -33,7 +33,8 @@
     "price": "Price per player",
     "paymentLink": "Payment link",
     "notes": "Notes",
-    "location": "Location"
+    "location": "Location",
+    "editDetails": "Edit details"
   },
   "language": { "switcher": "Language" },
   "nav": { "past": "Past matches" }

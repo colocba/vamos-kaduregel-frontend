@@ -33,7 +33,8 @@
     "price": "Precio por jugador",
     "paymentLink": "Link de pago",
     "notes": "Notas",
-    "location": "Lugar"
+    "location": "Lugar",
+    "editDetails": "Editar detalles"
   },
   "language": { "switcher": "Idioma" },
   "nav": { "past": "Partidos anteriores" }
