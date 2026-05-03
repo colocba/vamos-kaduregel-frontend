@@ -7,6 +7,8 @@ import { NotFoundPage } from "./pages/NotFound";
 import { PastMatchesPage } from "./pages/PastMatches";
 import { PastMatchDetailPage } from "./pages/PastMatchDetail";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
+import { AdminRoute } from "./admin/AdminRoute";
+import { CreateMatchPage } from "./pages/admin/CreateMatch";
 import { useAuth } from "./auth/useAuth";
 
 function LoginGate() {
@@ -27,6 +29,9 @@ export default function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/past" element={<PastMatchesPage />} />
               <Route path="/past/:id" element={<PastMatchDetailPage />} />
+              <Route element={<AdminRoute />}>
+                <Route path="/admin/create" element={<CreateMatchPage />} />
+              </Route>
             </Route>
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

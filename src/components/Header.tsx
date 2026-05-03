@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { APP_NAME } from "../constants";
 import { useAuth } from "../auth/useAuth";
 import { signOut } from "../auth/signOut";
+import { useIsAdmin } from "../admin/useIsAdmin";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Header() {
   const { t } = useTranslation();
   const auth = useAuth();
+  const isAdmin = useIsAdmin();
 
   return (
     <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
@@ -16,6 +18,11 @@ export function Header() {
         {auth.status === "signedIn" && (
           <Link to="/past" className="text-sm text-slate-700 hover:underline">
             {t("nav.past")}
+          </Link>
+        )}
+        {auth.status === "signedIn" && isAdmin && (
+          <Link to="/admin/create" className="text-sm text-slate-700 hover:underline">
+            {t("admin.createMatch")}
           </Link>
         )}
         <LanguageSwitcher />
