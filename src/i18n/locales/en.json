@@ -35,5 +35,6 @@
     "notes": "Notes",
     "location": "Location"
   },
-  "language": { "switcher": "Language" }
+  "language": { "switcher": "Language" },
+  "nav": { "past": "Past matches" }
 }

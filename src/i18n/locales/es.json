@@ -35,5 +35,6 @@
     "notes": "Notas",
     "location": "Lugar"
   },
-  "language": { "switcher": "Idioma" }
+  "language": { "switcher": "Idioma" },
+  "nav": { "past": "Partidos anteriores" }
 }

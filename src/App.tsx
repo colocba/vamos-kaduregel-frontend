@@ -4,6 +4,8 @@ import { Header } from "./components/Header";
 import { LoginPage } from "./pages/Login";
 import { HomePage } from "./pages/Home";
 import { NotFoundPage } from "./pages/NotFound";
+import { PastMatchesPage } from "./pages/PastMatches";
+import { PastMatchDetailPage } from "./pages/PastMatchDetail";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { useAuth } from "./auth/useAuth";
 
@@ -23,6 +25,8 @@ export default function App() {
             <Route path="/login" element={<LoginGate />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<HomePage />} />
+              <Route path="/past" element={<PastMatchesPage />} />
+              <Route path="/past/:id" element={<PastMatchDetailPage />} />
             </Route>
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

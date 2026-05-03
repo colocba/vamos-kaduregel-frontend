@@ -30,5 +30,6 @@
     "notes": "הערות",
     "location": "מיקום"
   },
-  "language": { "switcher": "שפה" }
+  "language": { "switcher": "שפה" },
+  "nav": { "past": "משחקים קודמים" }
 }
