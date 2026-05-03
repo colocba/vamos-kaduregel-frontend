@@ -1,0 +1,41 @@
+{
+  "auth": { "signIn": "Sign in with Google", "signOut": "Sign out" },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "match": {
+    "noUpcoming": "No match scheduled",
+    "open": "Open for sign-up",
+    "closed": "Full",
+    "cancelled": "Cancelled",
+    "openPaymentLink": "Open payment link",
+    "iPaid": "I paid",
+    "addGuest": "Add a guest",
+    "payForGuest": "Pay for a guest",
+    "cancelMySpot": "Cancel my spot",
+    "cancelGuest": "Cancel guest: {{name}}",
+    "guestOf": "Guest of {{name}}",
+    "team": "Team {{n}}",
+    "verified": "Verified"
+  },
+  "admin": {
+    "createMatch": "Create match",
+    "manageMatch": "Manage match",
+    "users": "Users",
+    "verifyToggle": "Verified",
+    "closeMatch": "Close sign-up",
+    "reopenMatch": "Reopen",
+    "cancelMatch": "Cancel match",
+    "fields": "Number of fields",
+    "price": "Price per player",
+    "paymentLink": "Payment link",
+    "notes": "Notes",
+    "location": "Location",
+    "editDetails": "Edit details"
+  },
+  "language": { "switcher": "Language" },
+  "nav": { "past": "Past matches" }
+}
