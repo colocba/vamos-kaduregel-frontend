@@ -42,6 +42,7 @@ A mobile- and desktop-friendly web app for a friends group that plays soccer eve
 ## Data model (Firestore)
 
 ### `users/{uid}`
+
 - `displayName: string`
 - `email: string`
 - `photoURL: string`
@@ -52,6 +53,7 @@ A mobile- and desktop-friendly web app for a friends group that plays soccer eve
 User docs are created on first sign-in if missing.
 
 ### `matches/{matchId}`
+
 - `date: timestamp` — Thursday at 20:00 local time (admin picks the date; time is fixed)
 - `location: string`
 - `numFields: 1 | 2`
@@ -68,6 +70,7 @@ User docs are created on first sign-in if missing.
 - `createdAt: timestamp`
 
 ### `matches/{matchId}/participants/{participantId}`
+
 One doc = one roster slot.
 
 - `paidByUid: string` — the user who paid
@@ -80,6 +83,7 @@ One doc = one roster slot.
 - `paidAt: timestamp`
 
 **Document ID convention:**
+
 - Self-entries (where `paidByUid === auth.uid` and `isGuest === false`): doc ID = the user's uid. This makes "you can't pay for yourself twice" a structural guarantee.
 - Guest entries: auto-generated ID.
 

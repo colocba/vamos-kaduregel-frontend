@@ -116,6 +116,7 @@ Each file has one clear responsibility. Hooks are isolated from components, tran
 ### Task 1: Scaffold Vite + React + TypeScript
 
 **Files:**
+
 - Create: `package.json`, `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/index.css`, `.gitignore`
 
 - [ ] **Step 1: Run Vite scaffold**
@@ -149,6 +150,7 @@ export default function App() {
 - [ ] **Step 5: Update `.gitignore`**
 
 Append:
+
 ```
 .env.local
 .env.*.local
@@ -167,6 +169,7 @@ ui-debug.log
 ```bash
 npm run dev
 ```
+
 Expected: server listening on `http://localhost:5173`, page shows "Vamos Kaduregel". Stop with Ctrl-C.
 
 - [ ] **Step 7: Commit**
@@ -181,6 +184,7 @@ git commit -m "chore: scaffold Vite + React + TypeScript project"
 ### Task 2: Add Tailwind CSS
 
 **Files:**
+
 - Create: `tailwind.config.js`, `postcss.config.js`
 - Modify: `src/index.css`, `src/App.tsx`
 
@@ -209,8 +213,14 @@ export default {
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root { height: 100%; }
-body { @apply bg-slate-50 text-slate-900 antialiased; }
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
 ```
 
 - [ ] **Step 4: Update `src/App.tsx` to use Tailwind**
@@ -230,6 +240,7 @@ export default function App() {
 ```bash
 npm run dev
 ```
+
 Expected: title is bold, large, centered, slate colors visible. Stop server.
 
 - [ ] **Step 6: Commit**
@@ -244,6 +255,7 @@ git commit -m "chore: add Tailwind CSS"
 ### Task 3: Add testing toolchain (Vitest + React Testing Library + JSDOM)
 
 **Files:**
+
 - Create: `vitest.config.ts`, `tsconfig.test.json`, `src/test/setup.ts`, `src/App.test.tsx`
 - Modify: `package.json` (add `test` script), `tsconfig.json` (include test config)
 
@@ -295,6 +307,7 @@ afterEach(() => cleanup());
 - [ ] **Step 5: Update `tsconfig.json` references**
 
 Add to top-level `references` array (create if missing):
+
 ```json
 { "path": "./tsconfig.test.json" }
 ```
@@ -302,6 +315,7 @@ Add to top-level `references` array (create if missing):
 - [ ] **Step 6: Add test scripts to `package.json`**
 
 In the `scripts` object:
+
 ```json
 "test": "vitest run",
 "test:watch": "vitest",
@@ -311,6 +325,7 @@ In the `scripts` object:
 - [ ] **Step 7: Write smoke test for `App`**
 
 `src/App.test.tsx`:
+
 ```tsx
 import { render, screen } from "@testing-library/react";
 import App from "./App";
@@ -328,6 +343,7 @@ describe("App", () => {
 ```bash
 npm test
 ```
+
 Expected: 1 passed.
 
 - [ ] **Step 9: Commit**
@@ -342,6 +358,7 @@ git commit -m "chore: add Vitest + RTL testing setup"
 ### Task 4: Add Firebase SDK and client init
 
 **Files:**
+
 - Create: `src/firebase/client.ts`, `.env.example`, `.env.local`
 - Modify: `src/main.tsx`
 
@@ -397,6 +414,7 @@ export const db: Firestore = getFirestore(app);
 ```bash
 npm test && npm run build
 ```
+
 Expected: tests pass, build succeeds.
 
 - [ ] **Step 6: Commit**
@@ -411,6 +429,7 @@ git commit -m "chore: add Firebase SDK and client init"
 ### Task 5: Add Firebase Emulator Suite + emulator hookup
 
 **Files:**
+
 - Create: `firebase.json`, `.firebaserc`, `firestore.rules`, `firestore.indexes.json`, `src/firebase/emulator.ts`
 - Modify: `src/firebase/client.ts`
 
@@ -420,6 +439,7 @@ git commit -m "chore: add Firebase SDK and client init"
 npm install -g firebase-tools
 firebase --version
 ```
+
 Expected: prints version. If not signed in, run `firebase login` (interactive — engineer does this manually).
 
 - [ ] **Step 2: Create `firebase.json`**
@@ -450,6 +470,7 @@ Expected: prints version. If not signed in, run `firebase login` (interactive �
 ```json
 { "projects": { "default": "vamos-kaduregel" } }
 ```
+
 (Project ID will be the actual one from Firebase console; this placeholder is replaced when the engineer runs `firebase use --add` after creating the project.)
 
 - [ ] **Step 4: Create initial `firestore.rules` (deny-all stub — strengthened in Phase 8)**
@@ -491,6 +512,7 @@ export function connectEmulatorsOnce() {
 - [ ] **Step 7: Wire emulator connect into `client.ts`**
 
 Append to `src/firebase/client.ts`:
+
 ```ts
 if (import.meta.env.VITE_USE_FIREBASE_EMULATORS === "true") {
   // dynamic import keeps emulator code out of the production bundle
@@ -503,6 +525,7 @@ if (import.meta.env.VITE_USE_FIREBASE_EMULATORS === "true") {
 ```bash
 firebase emulators:start
 ```
+
 Expected: UI at `http://localhost:4000`, Auth on 9099, Firestore on 8080. Stop with Ctrl-C.
 
 - [ ] **Step 9: Commit**
@@ -517,11 +540,13 @@ git commit -m "chore: add Firebase Emulator Suite and rules stub"
 ### Task 6: Add Firebase Hosting deploy script
 
 **Files:**
+
 - Modify: `package.json`
 
 - [ ] **Step 1: Add scripts to `package.json`**
 
 In `scripts`:
+
 ```json
 "emulators": "firebase emulators:start",
 "deploy:hosting": "npm run build && firebase deploy --only hosting",
@@ -540,6 +565,7 @@ git commit -m "chore: add deploy scripts"
 ### Task 7: Add ESLint + Prettier
 
 **Files:**
+
 - Create: `.eslintrc.cjs` (or use the Vite-generated one), `.prettierrc.json`, `.prettierignore`
 - Modify: `package.json`
 
@@ -574,6 +600,7 @@ coverage
 - [ ] **Step 4: Update `.eslintrc.cjs` extends array**
 
 Append `"prettier"` to the existing extends so ESLint doesn't fight Prettier on formatting:
+
 ```js
 extends: [
   "eslint:recommended",
@@ -596,6 +623,7 @@ extends: [
 ```bash
 npm run format && npm run lint
 ```
+
 Expected: no lint errors.
 
 - [ ] **Step 7: Commit**
@@ -612,6 +640,7 @@ git commit -m "chore: add ESLint + Prettier"
 ### Task 8: Add react-i18next with he/es/en stubs
 
 **Files:**
+
 - Create: `src/i18n/index.ts`, `src/i18n/locales/he.json`, `src/i18n/locales/es.json`, `src/i18n/locales/en.json`, `src/constants.ts`
 - Modify: `src/main.tsx`
 
@@ -674,7 +703,12 @@ export const DEFAULT_LOCALE: Locale = "he";
 ```json
 {
   "auth": { "signIn": "Iniciar sesión con Google", "signOut": "Cerrar sesión" },
-  "common": { "loading": "Cargando...", "error": "Ocurrió un error", "cancel": "Cancelar", "save": "Guardar" },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
   "match": {
     "noUpcoming": "No hay partido programado",
     "open": "Inscripción abierta",
@@ -713,7 +747,12 @@ export const DEFAULT_LOCALE: Locale = "he";
 ```json
 {
   "auth": { "signIn": "Sign in with Google", "signOut": "Sign out" },
-  "common": { "loading": "Loading...", "error": "Something went wrong", "cancel": "Cancel", "save": "Save" },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
   "match": {
     "noUpcoming": "No match scheduled",
     "open": "Open for sign-up",
@@ -835,6 +874,7 @@ describe("App", () => {
 ```bash
 npm test
 ```
+
 Expected: 1 passed.
 
 - [ ] **Step 11: Commit**
@@ -849,12 +889,14 @@ git commit -m "feat: add i18n with he/es/en translations"
 ### Task 9: Direction (RTL) handling
 
 **Files:**
+
 - Create: `src/i18n/direction.ts`, `src/i18n/direction.test.ts`
 - Modify: `src/main.tsx`, `tailwind.config.js`
 
 - [ ] **Step 1: Write failing test**
 
 `src/i18n/direction.test.ts`:
+
 ```ts
 import { directionFor, syncHtmlDirAndLang } from "./direction";
 
@@ -884,6 +926,7 @@ describe("syncHtmlDirAndLang", () => {
 ```bash
 npm test src/i18n/direction.test.ts
 ```
+
 Expected: FAIL — module not found.
 
 - [ ] **Step 3: Implement `src/i18n/direction.ts`**
@@ -909,6 +952,7 @@ export function syncHtmlDirAndLang(locale: Locale) {
 ```bash
 npm test src/i18n/direction.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Sync direction at startup in `src/main.tsx`**
@@ -935,9 +979,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 - [ ] **Step 6: Verify Tailwind RTL variants are available**
 
 Tailwind v3 supports `rtl:` / `ltr:` variants natively when `dir` is set on `<html>`. Verify by adding a temporary check in `App.tsx`:
+
 ```tsx
 <p className="rtl:text-right ltr:text-left">test</p>
 ```
+
 Run `npm run dev`, switch the html dir manually in DevTools, confirm alignment flips. Then revert the temporary line.
 
 - [ ] **Step 7: Commit**
@@ -952,12 +998,14 @@ git commit -m "feat: sync html dir/lang with active locale"
 ### Task 10: Language switcher component
 
 **Files:**
+
 - Create: `src/components/LanguageSwitcher.tsx`, `src/components/LanguageSwitcher.test.tsx`
 - Modify: `src/App.tsx`
 
 - [ ] **Step 1: Write failing test**
 
 `src/components/LanguageSwitcher.test.tsx`:
+
 ```tsx
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -980,6 +1028,7 @@ describe("LanguageSwitcher", () => {
 ```bash
 npm test src/components/LanguageSwitcher.test.tsx
 ```
+
 Expected: FAIL.
 
 - [ ] **Step 3: Implement `src/components/LanguageSwitcher.tsx`**
@@ -1003,7 +1052,9 @@ export function LanguageSwitcher() {
         className="rounded border border-slate-300 bg-white px-2 py-1"
       >
         {SUPPORTED_LOCALES.map((loc) => (
-          <option key={loc} value={loc}>{LABELS[loc]}</option>
+          <option key={loc} value={loc}>
+            {LABELS[loc]}
+          </option>
         ))}
       </select>
     </label>
@@ -1016,6 +1067,7 @@ export function LanguageSwitcher() {
 ```bash
 npm test src/components/LanguageSwitcher.test.tsx
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Commit**
@@ -1032,6 +1084,7 @@ git commit -m "feat: add language switcher"
 ### Task 11: Auth provider + useAuth hook
 
 **Files:**
+
 - Create: `src/auth/AuthProvider.tsx`, `src/auth/useAuth.ts`
 
 - [ ] **Step 1: Create `src/auth/AuthProvider.tsx`**
@@ -1101,6 +1154,7 @@ export default function App() {
 ```bash
 npm test && npm run build
 ```
+
 Expected: tests pass, build OK.
 
 - [ ] **Step 5: Commit**
@@ -1115,6 +1169,7 @@ git commit -m "feat: add AuthProvider and useAuth hook"
 ### Task 12: Sign-in / sign-out actions
 
 **Files:**
+
 - Create: `src/auth/signIn.ts`, `src/auth/signOut.ts`
 
 - [ ] **Step 1: Create `src/auth/signIn.ts`**
@@ -1153,6 +1208,7 @@ git commit -m "feat: add Google sign-in/out actions"
 ### Task 13: Login page
 
 **Files:**
+
 - Create: `src/pages/Login.tsx`
 
 - [ ] **Step 1: Create `src/pages/Login.tsx`**
@@ -1210,6 +1266,7 @@ git commit -m "feat: add login page"
 ### Task 14: User types + ensureUserDoc on first sign-in
 
 **Files:**
+
 - Create: `src/types/user.ts`, `src/auth/ensureUserDoc.ts`, `src/auth/ensureUserDoc.test.ts`
 - Modify: `src/auth/AuthProvider.tsx`
 
@@ -1232,11 +1289,13 @@ export type UserDoc = {
 - [ ] **Step 2: Write failing test using emulator**
 
 This test needs the Firestore emulator running. The CI/dev workflow assumes `firebase emulators:start` is up. Add to `package.json`:
+
 ```json
 "test:emu": "VITE_USE_FIREBASE_EMULATORS=true vitest run"
 ```
 
 `src/auth/ensureUserDoc.test.ts`:
+
 ```ts
 import { describe, it, expect, beforeEach } from "vitest";
 import { doc, getDoc, deleteDoc } from "firebase/firestore";
@@ -1293,6 +1352,7 @@ match /users/{uid} {
 firebase emulators:start &
 npm run test:emu src/auth/ensureUserDoc.test.ts
 ```
+
 Expected: FAIL — `ensureUserDoc` not implemented.
 
 - [ ] **Step 4: Implement `src/auth/ensureUserDoc.ts`**
@@ -1326,11 +1386,13 @@ export async function ensureUserDoc(user: User, resolvedLocale: Locale): Promise
 ```bash
 npm run test:emu src/auth/ensureUserDoc.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 6: Wire `ensureUserDoc` into `AuthProvider`**
 
 Update `src/auth/AuthProvider.tsx`:
+
 ```tsx
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { onAuthStateChanged, type User } from "firebase/auth";
@@ -1376,6 +1438,7 @@ git commit -m "feat: ensure user doc exists on first sign-in"
 ### Task 15: Header component (app name, language switcher, sign-out)
 
 **Files:**
+
 - Create: `src/components/Header.tsx`
 - Modify: `src/App.tsx`
 
@@ -1444,6 +1507,7 @@ export default function App() {
 firebase emulators:start &
 VITE_USE_FIREBASE_EMULATORS=true npm run dev
 ```
+
 Open `http://localhost:5173`. Click sign-in. The Auth emulator UI offers "Add new user" — create a fake user. Verify you land back on the app, the header shows sign-out, and a `users/{uid}` doc exists in the Firestore emulator UI (`http://localhost:4000`).
 
 - [ ] **Step 4: Commit**
@@ -1458,6 +1522,7 @@ git commit -m "feat: header with sign-out and language switcher"
 ### Task 16: Routing + ProtectedRoute
 
 **Files:**
+
 - Create: `src/auth/ProtectedRoute.tsx`, `src/pages/Home.tsx`, `src/pages/NotFound.tsx`
 - Modify: `src/App.tsx`
 
@@ -1558,6 +1623,7 @@ describe("App", () => {
 ```bash
 npm test
 ```
+
 Expected: PASS.
 
 - [ ] **Step 8: Commit**
@@ -1574,6 +1640,7 @@ git commit -m "feat: add router with protected route"
 ### Task 17: Domain types
 
 **Files:**
+
 - Create: `src/types/match.ts`, `src/types/participant.ts`
 
 - [ ] **Step 1: Create `src/types/match.ts`**
@@ -1631,11 +1698,13 @@ git commit -m "feat: add Match and Participant types"
 ### Task 18: Match helpers
 
 **Files:**
+
 - Create: `src/matches/helpers/deriveLimit.ts`, `src/matches/helpers/teamCount.ts`, `src/matches/helpers/isUpcoming.ts`, `src/matches/helpers/nextThursday.ts`, plus colocated `.test.ts` for each
 
 - [ ] **Step 1: Write failing tests**
 
 `src/matches/helpers/deriveLimit.test.ts`:
+
 ```ts
 import { deriveLimit } from "./deriveLimit";
 describe("deriveLimit", () => {
@@ -1645,6 +1714,7 @@ describe("deriveLimit", () => {
 ```
 
 `src/matches/helpers/teamCount.test.ts`:
+
 ```ts
 import { teamCount } from "./teamCount";
 describe("teamCount", () => {
@@ -1654,6 +1724,7 @@ describe("teamCount", () => {
 ```
 
 `src/matches/helpers/isUpcoming.test.ts`:
+
 ```ts
 import { Timestamp } from "firebase/firestore";
 import { isUpcoming } from "./isUpcoming";
@@ -1671,6 +1742,7 @@ describe("isUpcoming", () => {
 ```
 
 `src/matches/helpers/nextThursday.test.ts`:
+
 ```ts
 import { nextThursday } from "./nextThursday";
 
@@ -1696,11 +1768,13 @@ describe("nextThursday", () => {
 ```bash
 npm test src/matches/helpers
 ```
+
 Expected: FAIL.
 
 - [ ] **Step 3: Implement helpers**
 
 `src/matches/helpers/deriveLimit.ts`:
+
 ```ts
 export function deriveLimit(numFields: 1 | 2): number {
   return numFields * 12;
@@ -1708,6 +1782,7 @@ export function deriveLimit(numFields: 1 | 2): number {
 ```
 
 `src/matches/helpers/teamCount.ts`:
+
 ```ts
 export function teamCount(numFields: 1 | 2): number {
   return numFields * 2;
@@ -1715,6 +1790,7 @@ export function teamCount(numFields: 1 | 2): number {
 ```
 
 `src/matches/helpers/isUpcoming.ts`:
+
 ```ts
 import type { Timestamp } from "firebase/firestore";
 export function isUpcoming(date: Timestamp): boolean {
@@ -1723,6 +1799,7 @@ export function isUpcoming(date: Timestamp): boolean {
 ```
 
 `src/matches/helpers/nextThursday.ts`:
+
 ```ts
 export function nextThursday(now: Date = new Date()): Date {
   const d = new Date(now);
@@ -1742,6 +1819,7 @@ export function nextThursday(now: Date = new Date()): Date {
 ```bash
 npm test src/matches/helpers
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Commit**
@@ -1758,11 +1836,13 @@ git commit -m "feat: add match domain helpers"
 ### Task 19: useNextMatch hook
 
 **Files:**
+
 - Create: `src/matches/hooks/useNextMatch.ts`, `src/matches/hooks/useNextMatch.test.tsx`
 
 - [ ] **Step 1: Write failing test (emulator-backed)**
 
 `src/matches/hooks/useNextMatch.test.tsx`:
+
 ```tsx
 import { describe, it, expect, beforeEach } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
@@ -1791,14 +1871,30 @@ describe("useNextMatch", () => {
     const future = Timestamp.fromMillis(Date.now() + 60_000);
     const fartherFuture = Timestamp.fromMillis(Date.now() + 120_000);
     await addDoc(collection(db, "matches"), {
-      date: fartherFuture, location: "B", numFields: 1, playerLimit: 12,
-      pricePerPlayer: 50, paymentLink: "x", notes: "", status: "open",
-      paidCount: 0, createdBy: "u1", createdAt: Timestamp.now(),
+      date: fartherFuture,
+      location: "B",
+      numFields: 1,
+      playerLimit: 12,
+      pricePerPlayer: 50,
+      paymentLink: "x",
+      notes: "",
+      status: "open",
+      paidCount: 0,
+      createdBy: "u1",
+      createdAt: Timestamp.now(),
     });
     await addDoc(collection(db, "matches"), {
-      date: future, location: "A", numFields: 1, playerLimit: 12,
-      pricePerPlayer: 50, paymentLink: "x", notes: "", status: "open",
-      paidCount: 0, createdBy: "u1", createdAt: Timestamp.now(),
+      date: future,
+      location: "A",
+      numFields: 1,
+      playerLimit: 12,
+      pricePerPlayer: 50,
+      paymentLink: "x",
+      notes: "",
+      status: "open",
+      paidCount: 0,
+      createdBy: "u1",
+      createdAt: Timestamp.now(),
     });
     const { result } = renderHook(() => useNextMatch());
     await waitFor(() => expect(result.current.match?.location).toBe("A"));
@@ -1813,6 +1909,7 @@ Note: emulator rules need to permit reads on `matches`. For now keep the permiss
 ```bash
 npm run test:emu src/matches/hooks/useNextMatch.test.tsx
 ```
+
 Expected: FAIL.
 
 - [ ] **Step 3: Implement `src/matches/hooks/useNextMatch.ts`**
@@ -1820,7 +1917,13 @@ Expected: FAIL.
 ```ts
 import { useEffect, useState } from "react";
 import {
-  collection, limit, onSnapshot, orderBy, query, Timestamp, where,
+  collection,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  Timestamp,
+  where,
 } from "firebase/firestore";
 import { db } from "../../firebase/client";
 import type { Match, MatchDoc } from "../../types/match";
@@ -1842,7 +1945,7 @@ export function useNextMatch(): UseNextMatchResult {
       const first = snap.docs[0];
       setState({
         loading: false,
-        match: first ? ({ id: first.id, ...(first.data() as MatchDoc) }) : null,
+        match: first ? { id: first.id, ...(first.data() as MatchDoc) } : null,
       });
     });
   }, []);
@@ -1856,6 +1959,7 @@ export function useNextMatch(): UseNextMatchResult {
 ```bash
 npm run test:emu src/matches/hooks/useNextMatch.test.tsx
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Commit**
@@ -1870,6 +1974,7 @@ git commit -m "feat: add useNextMatch hook"
 ### Task 20: useParticipants hook
 
 **Files:**
+
 - Create: `src/matches/hooks/useParticipants.ts`
 
 - [ ] **Step 1: Implement (no separate test — covered by integration test in Task 27)**
@@ -1915,6 +2020,7 @@ git commit -m "feat: add useParticipants hook"
 ### Task 21: Wire HomePage to next match (read-only view)
 
 **Files:**
+
 - Create: `src/components/MatchInfo.tsx`
 - Modify: `src/pages/Home.tsx`
 
@@ -1927,8 +2033,12 @@ import type { Match } from "../types/match";
 export function MatchInfo({ match }: { match: Match }) {
   const { t, i18n } = useTranslation();
   const dateFmt = new Intl.DateTimeFormat(i18n.resolvedLanguage, {
-    weekday: "long", year: "numeric", month: "long", day: "numeric",
-    hour: "2-digit", minute: "2-digit",
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   return (
@@ -1983,6 +2093,7 @@ git commit -m "feat: home page shows next match"
 ### Task 22: Past matches list + detail
 
 **Files:**
+
 - Create: `src/matches/hooks/usePastMatches.ts`, `src/matches/hooks/useMatch.ts`, `src/pages/PastMatches.tsx`, `src/pages/PastMatchDetail.tsx`
 - Modify: `src/App.tsx` (add routes)
 
@@ -1991,7 +2102,13 @@ git commit -m "feat: home page shows next match"
 ```ts
 import { useEffect, useState } from "react";
 import {
-  collection, onSnapshot, orderBy, query, Timestamp, where, limit,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  Timestamp,
+  where,
+  limit,
 } from "firebase/firestore";
 import { db } from "../../firebase/client";
 import type { Match, MatchDoc } from "../../types/match";
@@ -2027,14 +2144,18 @@ import type { Match, MatchDoc } from "../../types/match";
 
 export function useMatch(matchId: string | null) {
   const [state, setState] = useState<{ loading: boolean; match: Match | null }>({
-    loading: true, match: null,
+    loading: true,
+    match: null,
   });
   useEffect(() => {
-    if (!matchId) { setState({ loading: false, match: null }); return; }
+    if (!matchId) {
+      setState({ loading: false, match: null });
+      return;
+    }
     return onSnapshot(doc(db, "matches", matchId), (snap) => {
       setState({
         loading: false,
-        match: snap.exists() ? ({ id: snap.id, ...(snap.data() as MatchDoc) }) : null,
+        match: snap.exists() ? { id: snap.id, ...(snap.data() as MatchDoc) } : null,
       });
     });
   }, [matchId]);
@@ -2097,8 +2218,14 @@ export function PastMatchDetailPage() {
       <ul className="space-y-1">
         {participants.map((p) => (
           <li key={p.id} className="rounded bg-white p-2 shadow-sm">
-            {p.isGuest ? `${p.guestName} (${t("match.guestOf", { name: p.paidByName })})` : p.paidByName}
-            {p.team && <span className="ms-2 text-sm text-slate-500">· {t("match.team", { n: p.team })}</span>}
+            {p.isGuest
+              ? `${p.guestName} (${t("match.guestOf", { name: p.paidByName })})`
+              : p.paidByName}
+            {p.team && (
+              <span className="ms-2 text-sm text-slate-500">
+                · {t("match.team", { n: p.team })}
+              </span>
+            )}
           </li>
         ))}
       </ul>
@@ -2110,6 +2237,7 @@ export function PastMatchDetailPage() {
 - [ ] **Step 5: Add routes to `src/App.tsx`**
 
 Inside the `<Route element={<ProtectedRoute />}>`:
+
 ```tsx
 import { PastMatchesPage } from "./pages/PastMatches";
 import { PastMatchDetailPage } from "./pages/PastMatchDetail";
@@ -2119,12 +2247,18 @@ import { PastMatchDetailPage } from "./pages/PastMatchDetail";
 ```
 
 Also add a nav link in `Header.tsx`:
+
 ```tsx
 import { Link } from "react-router-dom";
-{auth.status === "signedIn" && (
-  <Link to="/past" className="text-sm text-slate-600">…</Link>
-)}
+{
+  auth.status === "signedIn" && (
+    <Link to="/past" className="text-sm text-slate-600">
+      …
+    </Link>
+  );
+}
 ```
+
 Use translation key — add `"nav.past"` to all three locale files (`he: "משחקים קודמים"`, `es: "Partidos anteriores"`, `en: "Past matches"`).
 
 - [ ] **Step 6: Commit**
@@ -2141,11 +2275,13 @@ git commit -m "feat: past matches list and detail"
 ### Task 23: joinMatch transaction (self only)
 
 **Files:**
+
 - Create: `src/matches/api/joinMatch.ts`, `src/matches/api/joinMatch.test.ts`
 
 - [ ] **Step 1: Write failing test**
 
 `src/matches/api/joinMatch.test.ts`:
+
 ```ts
 import { describe, it, expect, beforeEach } from "vitest";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, Timestamp } from "firebase/firestore";
@@ -2207,12 +2343,21 @@ describe("joinMatch (self only)", () => {
   });
 
   it("flips status to closed when limit hit", async () => {
-    const ref = await addDoc(collection(db, "matches"), baseMatch({ playerLimit: 2, paidCount: 1 }));
+    const ref = await addDoc(
+      collection(db, "matches"),
+      baseMatch({ playerLimit: 2, paidCount: 1 }),
+    );
     // pre-existing other participant
     const { setDoc } = await import("firebase/firestore");
     await setDoc(doc(db, "matches", ref.id, "participants", "other"), {
-      paidByUid: "other", paidByName: "O", isGuest: false, guestName: null,
-      team: null, verified: false, verifiedBy: null, paidAt: Timestamp.now(),
+      paidByUid: "other",
+      paidByName: "O",
+      isGuest: false,
+      guestName: null,
+      team: null,
+      verified: false,
+      verifiedBy: null,
+      paidAt: Timestamp.now(),
     });
     await joinMatch({ matchId: ref.id, uid: "u2", name: "Bob", isAdmin: false });
     const updated = (await getDoc(ref)).data();
@@ -2221,9 +2366,14 @@ describe("joinMatch (self only)", () => {
   });
 
   it("rejects when match is full", async () => {
-    const ref = await addDoc(collection(db, "matches"), baseMatch({
-      playerLimit: 1, paidCount: 1, status: "closed",
-    }));
+    const ref = await addDoc(
+      collection(db, "matches"),
+      baseMatch({
+        playerLimit: 1,
+        paidCount: 1,
+        status: "closed",
+      }),
+    );
     await expect(
       joinMatch({ matchId: ref.id, uid: "u3", name: "C", isAdmin: false }),
     ).rejects.toThrow(/full|closed/i);
@@ -2236,6 +2386,7 @@ describe("joinMatch (self only)", () => {
 ```bash
 npm run test:emu src/matches/api/joinMatch.test.ts
 ```
+
 Expected: FAIL.
 
 - [ ] **Step 3: Implement `src/matches/api/joinMatch.ts`**
@@ -2293,6 +2444,7 @@ export async function joinMatch(input: JoinMatchInput): Promise<void> {
 ```bash
 npm run test:emu src/matches/api/joinMatch.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Commit**
@@ -2307,11 +2459,13 @@ git commit -m "feat: joinMatch transaction (self only)"
 ### Task 24: joinMatch with guest (self + guest)
 
 **Files:**
+
 - Modify: `src/matches/api/joinMatch.ts`, `src/matches/api/joinMatch.test.ts`
 
 - [ ] **Step 1: Add failing test for guest case**
 
 Append to `joinMatch.test.ts`:
+
 ```ts
 describe("joinMatch with guest", () => {
   beforeEach(clearMatches);
@@ -2319,7 +2473,11 @@ describe("joinMatch with guest", () => {
   it("creates self + guest, +2 to count", async () => {
     const ref = await addDoc(collection(db, "matches"), baseMatch());
     await joinMatch({
-      matchId: ref.id, uid: "u1", name: "Alice", isAdmin: false, guestName: "Mr Guest",
+      matchId: ref.id,
+      uid: "u1",
+      name: "Alice",
+      isAdmin: false,
+      guestName: "Mr Guest",
     });
     const updated = (await getDoc(ref)).data();
     expect(updated?.paidCount).toBe(2);
@@ -2332,9 +2490,13 @@ describe("joinMatch with guest", () => {
   });
 
   it("rejects when only 1 slot remains and a guest is requested", async () => {
-    const ref = await addDoc(collection(db, "matches"), baseMatch({
-      playerLimit: 12, paidCount: 11,
-    }));
+    const ref = await addDoc(
+      collection(db, "matches"),
+      baseMatch({
+        playerLimit: 12,
+        paidCount: 11,
+      }),
+    );
     await expect(
       joinMatch({ matchId: ref.id, uid: "u1", name: "A", isAdmin: false, guestName: "G" }),
     ).rejects.toThrow(/full/i);
@@ -2347,6 +2509,7 @@ describe("joinMatch with guest", () => {
 ```bash
 npm run test:emu src/matches/api/joinMatch.test.ts
 ```
+
 Expected: 2 failures.
 
 - [ ] **Step 3: Update `src/matches/api/joinMatch.ts`**
@@ -2422,6 +2585,7 @@ export async function joinMatch(input: JoinMatchInput): Promise<void> {
 ```bash
 npm run test:emu src/matches/api/joinMatch.test.ts
 ```
+
 Expected: PASS (all cases).
 
 - [ ] **Step 5: Commit**
@@ -2436,14 +2600,25 @@ git commit -m "feat: joinMatch supports paying for a guest"
 ### Task 25: addGuest (after self-pay)
 
 **Files:**
+
 - Create: `src/matches/api/addGuest.ts`, `src/matches/api/addGuest.test.ts`
 
 - [ ] **Step 1: Write failing test**
 
 `src/matches/api/addGuest.test.ts`:
+
 ```ts
 import { describe, it, expect, beforeEach } from "vitest";
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, Timestamp, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  Timestamp,
+  setDoc,
+} from "firebase/firestore";
 import { connectEmulatorsOnce } from "../../firebase/emulator";
 import { db } from "../../firebase/client";
 import { addGuest } from "./addGuest";
@@ -2464,16 +2639,34 @@ describe("addGuest", () => {
 
   it("adds one guest, +1 to count", async () => {
     const ref = await addDoc(collection(db, "matches"), {
-      date: Timestamp.fromMillis(Date.now() + 60_000), location: "X",
-      numFields: 1, playerLimit: 12, pricePerPlayer: 0, paymentLink: "",
-      notes: "", status: "open", paidCount: 1, createdBy: "a", createdAt: Timestamp.now(),
+      date: Timestamp.fromMillis(Date.now() + 60_000),
+      location: "X",
+      numFields: 1,
+      playerLimit: 12,
+      pricePerPlayer: 0,
+      paymentLink: "",
+      notes: "",
+      status: "open",
+      paidCount: 1,
+      createdBy: "a",
+      createdAt: Timestamp.now(),
     });
     await setDoc(doc(db, "matches", ref.id, "participants", "u1"), {
-      paidByUid: "u1", paidByName: "Alice", isGuest: false, guestName: null,
-      team: null, verified: false, verifiedBy: null, paidAt: Timestamp.now(),
+      paidByUid: "u1",
+      paidByName: "Alice",
+      isGuest: false,
+      guestName: null,
+      team: null,
+      verified: false,
+      verifiedBy: null,
+      paidAt: Timestamp.now(),
     });
     await addGuest({
-      matchId: ref.id, uid: "u1", name: "Alice", guestName: "Bob", isAdmin: false,
+      matchId: ref.id,
+      uid: "u1",
+      name: "Alice",
+      guestName: "Bob",
+      isAdmin: false,
     });
     const updated = (await getDoc(ref)).data();
     expect(updated?.paidCount).toBe(2);
@@ -2486,6 +2679,7 @@ describe("addGuest", () => {
 ```bash
 npm run test:emu src/matches/api/addGuest.test.ts
 ```
+
 Expected: FAIL.
 
 - [ ] **Step 3: Implement `src/matches/api/addGuest.ts`**
@@ -2542,6 +2736,7 @@ export async function addGuest(input: AddGuestInput): Promise<void> {
 ```bash
 npm run test:emu src/matches/api/addGuest.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Commit**
@@ -2556,14 +2751,25 @@ git commit -m "feat: addGuest transaction"
 ### Task 26: cancelParticipant transaction (with reopen logic)
 
 **Files:**
+
 - Create: `src/matches/api/cancelParticipant.ts`, `src/matches/api/cancelParticipant.test.ts`
 
 - [ ] **Step 1: Write failing test**
 
 `src/matches/api/cancelParticipant.test.ts`:
+
 ```ts
 import { describe, it, expect, beforeEach } from "vitest";
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, Timestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
 import { connectEmulatorsOnce } from "../../firebase/emulator";
 import { db } from "../../firebase/client";
 import { cancelParticipant } from "./cancelParticipant";
@@ -2584,13 +2790,27 @@ describe("cancelParticipant", () => {
 
   it("removes participant and decrements count", async () => {
     const ref = await addDoc(collection(db, "matches"), {
-      date: Timestamp.fromMillis(Date.now() + 60_000), location: "X",
-      numFields: 1, playerLimit: 12, pricePerPlayer: 0, paymentLink: "",
-      notes: "", status: "open", paidCount: 1, createdBy: "a", createdAt: Timestamp.now(),
+      date: Timestamp.fromMillis(Date.now() + 60_000),
+      location: "X",
+      numFields: 1,
+      playerLimit: 12,
+      pricePerPlayer: 0,
+      paymentLink: "",
+      notes: "",
+      status: "open",
+      paidCount: 1,
+      createdBy: "a",
+      createdAt: Timestamp.now(),
     });
     await setDoc(doc(db, "matches", ref.id, "participants", "u1"), {
-      paidByUid: "u1", paidByName: "Alice", isGuest: false, guestName: null,
-      team: null, verified: false, verifiedBy: null, paidAt: Timestamp.now(),
+      paidByUid: "u1",
+      paidByName: "Alice",
+      isGuest: false,
+      guestName: null,
+      team: null,
+      verified: false,
+      verifiedBy: null,
+      paidAt: Timestamp.now(),
     });
     await cancelParticipant({ matchId: ref.id, participantId: "u1" });
     const updated = (await getDoc(ref)).data();
@@ -2600,13 +2820,27 @@ describe("cancelParticipant", () => {
 
   it("reopens a closed match when a slot frees", async () => {
     const ref = await addDoc(collection(db, "matches"), {
-      date: Timestamp.fromMillis(Date.now() + 60_000), location: "X",
-      numFields: 1, playerLimit: 1, pricePerPlayer: 0, paymentLink: "",
-      notes: "", status: "closed", paidCount: 1, createdBy: "a", createdAt: Timestamp.now(),
+      date: Timestamp.fromMillis(Date.now() + 60_000),
+      location: "X",
+      numFields: 1,
+      playerLimit: 1,
+      pricePerPlayer: 0,
+      paymentLink: "",
+      notes: "",
+      status: "closed",
+      paidCount: 1,
+      createdBy: "a",
+      createdAt: Timestamp.now(),
     });
     await setDoc(doc(db, "matches", ref.id, "participants", "u1"), {
-      paidByUid: "u1", paidByName: "Alice", isGuest: false, guestName: null,
-      team: null, verified: false, verifiedBy: null, paidAt: Timestamp.now(),
+      paidByUid: "u1",
+      paidByName: "Alice",
+      isGuest: false,
+      guestName: null,
+      team: null,
+      verified: false,
+      verifiedBy: null,
+      paidAt: Timestamp.now(),
     });
     await cancelParticipant({ matchId: ref.id, participantId: "u1" });
     const updated = (await getDoc(ref)).data();
@@ -2621,6 +2855,7 @@ describe("cancelParticipant", () => {
 ```bash
 npm run test:emu src/matches/api/cancelParticipant.test.ts
 ```
+
 Expected: FAIL.
 
 - [ ] **Step 3: Implement `src/matches/api/cancelParticipant.ts`**
@@ -2657,6 +2892,7 @@ export async function cancelParticipant({ matchId, participantId }: CancelInput)
 ```bash
 npm run test:emu src/matches/api/cancelParticipant.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Commit**
@@ -2671,6 +2907,7 @@ git commit -m "feat: cancelParticipant transaction with reopen"
 ### Task 27: RosterList + ParticipantRow
 
 **Files:**
+
 - Create: `src/components/RosterList.tsx`, `src/components/ParticipantRow.tsx`
 
 - [ ] **Step 1: Create `src/components/ParticipantRow.tsx`**
@@ -2695,8 +2932,14 @@ export function ParticipantRow({ participant: p, canCancel, onCancel }: Particip
     <li className="flex items-center justify-between rounded bg-white p-2 shadow-sm">
       <div className="flex items-center gap-2">
         <span>{label}</span>
-        {p.verified && <span aria-label={t("match.verified")} className="text-emerald-600">✓</span>}
-        {p.team && <span className="text-sm text-slate-500">· {t("match.team", { n: p.team })}</span>}
+        {p.verified && (
+          <span aria-label={t("match.verified")} className="text-emerald-600">
+            ✓
+          </span>
+        )}
+        {p.team && (
+          <span className="text-sm text-slate-500">· {t("match.team", { n: p.team })}</span>
+        )}
       </div>
       {canCancel && onCancel && (
         <button onClick={onCancel} className="text-sm text-red-600">
@@ -2718,7 +2961,10 @@ import { isUpcoming } from "../matches/helpers/isUpcoming";
 import type { Match } from "../types/match";
 
 export function RosterList({
-  match, participants, currentUid, isAdmin,
+  match,
+  participants,
+  currentUid,
+  isAdmin,
 }: {
   match: Match;
   participants: Participant[];
@@ -2736,7 +2982,11 @@ export function RosterList({
             key={p.id}
             participant={p}
             canCancel={canCancel}
-            onCancel={canCancel ? () => cancelParticipant({ matchId: match.id, participantId: p.id }) : undefined}
+            onCancel={
+              canCancel
+                ? () => cancelParticipant({ matchId: match.id, participantId: p.id })
+                : undefined
+            }
           />
         );
       })}
@@ -2757,6 +3007,7 @@ git commit -m "feat: roster list with cancel buttons"
 ### Task 28: PayButtons + GuestNameModal + Home wiring
 
 **Files:**
+
 - Create: `src/components/BottomSheet.tsx`, `src/components/GuestNameModal.tsx`, `src/components/PayButtons.tsx`
 - Modify: `src/pages/Home.tsx`
 
@@ -2766,11 +3017,19 @@ git commit -m "feat: roster list with cancel buttons"
 import { useEffect, type ReactNode } from "react";
 
 export function BottomSheet({
-  open, onClose, children,
-}: { open: boolean; onClose: () => void; children: ReactNode }) {
+  open,
+  onClose,
+  children,
+}: {
+  open: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}) {
   useEffect(() => {
     if (!open) return;
-    function onEsc(e: KeyboardEvent) { if (e.key === "Escape") onClose(); }
+    function onEsc(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
     document.addEventListener("keydown", onEsc);
     return () => document.removeEventListener("keydown", onEsc);
   }, [open, onClose]);
@@ -2795,7 +3054,9 @@ import { useTranslation } from "react-i18next";
 import { BottomSheet } from "./BottomSheet";
 
 export function GuestNameModal({
-  open, onSubmit, onCancel,
+  open,
+  onSubmit,
+  onCancel,
 }: {
   open: boolean;
   onSubmit: (name: string) => void;
@@ -2813,10 +3074,15 @@ export function GuestNameModal({
         className="w-full rounded border border-slate-300 p-2"
       />
       <div className="mt-4 flex justify-end gap-2">
-        <button onClick={onCancel} className="px-3 py-2">{t("common.cancel")}</button>
+        <button onClick={onCancel} className="px-3 py-2">
+          {t("common.cancel")}
+        </button>
         <button
           disabled={!name.trim()}
-          onClick={() => { onSubmit(name.trim()); setName(""); }}
+          onClick={() => {
+            onSubmit(name.trim());
+            setName("");
+          }}
           className="rounded bg-slate-900 px-3 py-2 text-white disabled:opacity-50"
         >
           {t("common.save")}
@@ -2838,7 +3104,11 @@ import type { Match } from "../types/match";
 import { GuestNameModal } from "./GuestNameModal";
 
 export function PayButtons({
-  match, currentUid, currentName, isAdmin, hasSelfEntry,
+  match,
+  currentUid,
+  currentName,
+  isAdmin,
+  hasSelfEntry,
 }: {
   match: Match;
   currentUid: string;
@@ -2853,28 +3123,53 @@ export function PayButtons({
   const disabled = busy || match.status !== "open";
 
   async function selfOnly() {
-    setError(null); setBusy(true);
+    setError(null);
+    setBusy(true);
     try {
       await joinMatch({ matchId: match.id, uid: currentUid, name: currentName, isAdmin });
-    } catch (e: any) { setError(e.message); } finally { setBusy(false); }
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function selfPlusGuest(guestName: string) {
-    setError(null); setBusy(true); setModal("none");
+    setError(null);
+    setBusy(true);
+    setModal("none");
     try {
       await joinMatch({
-        matchId: match.id, uid: currentUid, name: currentName, isAdmin, guestName,
+        matchId: match.id,
+        uid: currentUid,
+        name: currentName,
+        isAdmin,
+        guestName,
       });
-    } catch (e: any) { setError(e.message); } finally { setBusy(false); }
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function guestOnly(guestName: string) {
-    setError(null); setBusy(true); setModal("none");
+    setError(null);
+    setBusy(true);
+    setModal("none");
     try {
       await addGuest({
-        matchId: match.id, uid: currentUid, name: currentName, isAdmin, guestName,
+        matchId: match.id,
+        uid: currentUid,
+        name: currentName,
+        isAdmin,
+        guestName,
       });
-    } catch (e: any) { setError(e.message); } finally { setBusy(false); }
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -2988,7 +3283,10 @@ export function useIsAdmin(): boolean {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    if (!uid) { setIsAdmin(false); return; }
+    if (!uid) {
+      setIsAdmin(false);
+      return;
+    }
     return onSnapshot(doc(db, "users", uid), (snap) => {
       setIsAdmin(snap.exists() && !!snap.data()?.isAdmin);
     });
@@ -3001,6 +3299,7 @@ export function useIsAdmin(): boolean {
 - [ ] **Step 6: Manual smoke test**
 
 Start emulators + dev. Sign in as a test user. Verify:
+
 - Cannot see admin features.
 - Click "I paid" → roster shows your name.
 - Click "Add a guest" → enter name → roster shows guest of you.
@@ -3020,6 +3319,7 @@ git commit -m "feat: home page pay/cancel/guest flow"
 ### Task 29: AdminRoute guard
 
 **Files:**
+
 - Create: `src/admin/AdminRoute.tsx`
 
 - [ ] **Step 1: Create `src/admin/AdminRoute.tsx`**
@@ -3051,6 +3351,7 @@ git commit -m "feat: admin route guard"
 ### Task 30: createMatch action + form
 
 **Files:**
+
 - Create: `src/matches/api/createMatch.ts`, `src/pages/admin/CreateMatch.tsx`
 - Modify: `src/App.tsx` (add route), `src/components/Header.tsx` (admin nav links)
 
@@ -3125,7 +3426,8 @@ export function CreateMatchPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null); setBusy(true);
+    setError(null);
+    setBusy(true);
     try {
       const id = await createMatch({
         date: new Date(date),
@@ -3137,7 +3439,11 @@ export function CreateMatchPage() {
         createdBy: auth.user.uid,
       });
       navigate(`/admin/match/${id}`);
-    } catch (e: any) { setError(e.message); } finally { setBusy(false); }
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -3146,38 +3452,67 @@ export function CreateMatchPage() {
       <form onSubmit={submit} className="space-y-3">
         <label className="block">
           <span className="text-sm">{t("admin.location")}</span>
-          <input value={location} onChange={(e) => setLocation(e.target.value)}
-            required className="mt-1 w-full rounded border p-2" />
+          <input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+            className="mt-1 w-full rounded border p-2"
+          />
         </label>
         <label className="block">
           <span className="text-sm">Date</span>
-          <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)}
-            required className="mt-1 w-full rounded border p-2" />
+          <input
+            type="datetime-local"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className="mt-1 w-full rounded border p-2"
+          />
         </label>
         <label className="block">
           <span className="text-sm">{t("admin.fields")}</span>
-          <select value={numFields} onChange={(e) => setNumFields(Number(e.target.value) as 1 | 2)}
-            className="mt-1 w-full rounded border p-2">
+          <select
+            value={numFields}
+            onChange={(e) => setNumFields(Number(e.target.value) as 1 | 2)}
+            className="mt-1 w-full rounded border p-2"
+          >
             <option value={1}>1</option>
             <option value={2}>2</option>
           </select>
         </label>
         <label className="block">
           <span className="text-sm">{t("admin.price")}</span>
-          <input type="number" min={0} value={price} onChange={(e) => setPrice(Number(e.target.value))}
-            required className="mt-1 w-full rounded border p-2" />
+          <input
+            type="number"
+            min={0}
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            required
+            className="mt-1 w-full rounded border p-2"
+          />
         </label>
         <label className="block">
           <span className="text-sm">{t("admin.paymentLink")}</span>
-          <input type="url" value={link} onChange={(e) => setLink(e.target.value)}
-            required className="mt-1 w-full rounded border p-2" />
+          <input
+            type="url"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            required
+            className="mt-1 w-full rounded border p-2"
+          />
         </label>
         <label className="block">
           <span className="text-sm">{t("admin.notes")}</span>
-          <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
-            className="mt-1 w-full rounded border p-2" />
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="mt-1 w-full rounded border p-2"
+          />
         </label>
-        <button disabled={busy} className="w-full rounded bg-slate-900 p-3 text-white disabled:opacity-50">
+        <button
+          disabled={busy}
+          className="w-full rounded bg-slate-900 p-3 text-white disabled:opacity-50"
+        >
           {t("common.save")}
         </button>
         {error && <p className="text-sm text-red-600">{error}</p>}
@@ -3190,13 +3525,14 @@ export function CreateMatchPage() {
 - [ ] **Step 3: Add route to `src/App.tsx`**
 
 Inside the protected branch, add:
+
 ```tsx
 import { AdminRoute } from "./admin/AdminRoute";
 import { CreateMatchPage } from "./pages/admin/CreateMatch";
 
 <Route element={<AdminRoute />}>
   <Route path="/admin/create" element={<CreateMatchPage />} />
-</Route>
+</Route>;
 ```
 
 - [ ] **Step 4: Add admin nav links in `Header.tsx`**
@@ -3206,7 +3542,13 @@ import { Link } from "react-router-dom";
 import { useIsAdmin } from "../admin/useIsAdmin";
 
 const isAdmin = useIsAdmin();
-{isAdmin && <Link to="/admin/create" className="text-sm">{t("admin.createMatch")}</Link>}
+{
+  isAdmin && (
+    <Link to="/admin/create" className="text-sm">
+      {t("admin.createMatch")}
+    </Link>
+  );
+}
 ```
 
 - [ ] **Step 5: Commit**
@@ -3221,6 +3563,7 @@ git commit -m "feat: create match admin form"
 ### Task 31: ManageMatch — verify toggle
 
 **Files:**
+
 - Create: `src/matches/api/verifyParticipant.ts`, `src/pages/admin/ManageMatch.tsx`
 - Modify: `src/App.tsx` (add route)
 
@@ -3271,18 +3614,28 @@ export function ManageMatchPage() {
       <MatchInfo match={match} />
       <ul className="space-y-1">
         {participants.map((p) => (
-          <li key={p.id} className="flex items-center justify-between rounded bg-white p-2 shadow-sm">
+          <li
+            key={p.id}
+            className="flex items-center justify-between rounded bg-white p-2 shadow-sm"
+          >
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"
                 checked={p.verified}
                 onChange={(e) =>
                   verifyParticipant({
-                    matchId: match.id, participantId: p.id, verified: e.target.checked, byUid: uid,
+                    matchId: match.id,
+                    participantId: p.id,
+                    verified: e.target.checked,
+                    byUid: uid,
                   })
                 }
               />
-              <span>{p.isGuest ? `${p.guestName} (${t("match.guestOf", { name: p.paidByName })})` : p.paidByName}</span>
+              <span>
+                {p.isGuest
+                  ? `${p.guestName} (${t("match.guestOf", { name: p.paidByName })})`
+                  : p.paidByName}
+              </span>
             </div>
             <button
               className="text-sm text-red-600"
@@ -3301,9 +3654,10 @@ export function ManageMatchPage() {
 - [ ] **Step 3: Add route to `src/App.tsx`**
 
 Inside `AdminRoute`:
+
 ```tsx
 import { ManageMatchPage } from "./pages/admin/ManageMatch";
-<Route path="/admin/match/:id" element={<ManageMatchPage />} />
+<Route path="/admin/match/:id" element={<ManageMatchPage />} />;
 ```
 
 - [ ] **Step 4: Commit**
@@ -3318,6 +3672,7 @@ git commit -m "feat: admin verify + cancel"
 ### Task 32: ManageMatch — team assignment
 
 **Files:**
+
 - Create: `src/matches/api/assignTeam.ts`
 - Modify: `src/pages/admin/ManageMatch.tsx`
 
@@ -3341,6 +3696,7 @@ export async function assignTeam(args: {
 - [ ] **Step 2: Add team select to each row in `ManageMatchPage`**
 
 In the participant `<li>`, add a select:
+
 ```tsx
 import { teamCount } from "../../matches/helpers/teamCount";
 import { assignTeam } from "../../matches/api/assignTeam";
@@ -3350,15 +3706,22 @@ const teamOptions = Array.from({ length: teams }, (_, i) => i + 1);
 
 <select
   value={p.team ?? ""}
-  onChange={(e) => assignTeam({
-    matchId: match.id, participantId: p.id,
-    team: e.target.value === "" ? null : (Number(e.target.value) as 1 | 2 | 3 | 4),
-  })}
+  onChange={(e) =>
+    assignTeam({
+      matchId: match.id,
+      participantId: p.id,
+      team: e.target.value === "" ? null : (Number(e.target.value) as 1 | 2 | 3 | 4),
+    })
+  }
   className="rounded border p-1 text-sm"
 >
   <option value="">—</option>
-  {teamOptions.map((n) => <option key={n} value={n}>{n}</option>)}
-</select>
+  {teamOptions.map((n) => (
+    <option key={n} value={n}>
+      {n}
+    </option>
+  ))}
+</select>;
 ```
 
 - [ ] **Step 3: Commit**
@@ -3373,6 +3736,7 @@ git commit -m "feat: admin team assignment"
 ### Task 33: ManageMatch — close/reopen/cancel/edit
 
 **Files:**
+
 - Create: `src/matches/api/setMatchStatus.ts`, `src/matches/api/updateMatch.ts`
 - Modify: `src/pages/admin/ManageMatch.tsx`
 
@@ -3418,23 +3782,36 @@ export async function updateMatch({ matchId, patch }: UpdateMatchInput): Promise
 - [ ] **Step 3: Add control buttons to `ManageMatchPage`**
 
 Above the participant list:
+
 ```tsx
 import { setMatchStatus } from "../../matches/api/setMatchStatus";
 
 <div className="flex flex-wrap gap-2">
   {match.status === "open" && (
-    <button onClick={() => setMatchStatus(match.id, "closed")}
-      className="rounded border px-3 py-1 text-sm">{t("admin.closeMatch")}</button>
+    <button
+      onClick={() => setMatchStatus(match.id, "closed")}
+      className="rounded border px-3 py-1 text-sm"
+    >
+      {t("admin.closeMatch")}
+    </button>
   )}
   {match.status === "closed" && (
-    <button onClick={() => setMatchStatus(match.id, "open")}
-      className="rounded border px-3 py-1 text-sm">{t("admin.reopenMatch")}</button>
+    <button
+      onClick={() => setMatchStatus(match.id, "open")}
+      className="rounded border px-3 py-1 text-sm"
+    >
+      {t("admin.reopenMatch")}
+    </button>
   )}
   {match.status !== "cancelled" && (
-    <button onClick={() => setMatchStatus(match.id, "cancelled")}
-      className="rounded border border-red-400 px-3 py-1 text-sm text-red-700">{t("admin.cancelMatch")}</button>
+    <button
+      onClick={() => setMatchStatus(match.id, "cancelled")}
+      className="rounded border border-red-400 px-3 py-1 text-sm text-red-700"
+    >
+      {t("admin.cancelMatch")}
+    </button>
   )}
-</div>
+</div>;
 ```
 
 - [ ] **Step 4: Add an Edit panel to `ManageMatchPage`**
@@ -3470,32 +3847,78 @@ function EditPanel({ match }: { match: import("../../types/match").Match }) {
   }
 
   async function save() {
-    setBusy(true); setError(null);
+    setBusy(true);
+    setError(null);
     try {
       await updateMatch({
         matchId: match.id,
         patch: {
-          date: new Date(date), location, numFields,
-          pricePerPlayer: price, paymentLink: link, notes,
+          date: new Date(date),
+          location,
+          numFields,
+          pricePerPlayer: price,
+          paymentLink: link,
+          notes,
         },
       });
       setOpen(false);
-    } catch (e: any) { setError(e.message); } finally { setBusy(false); }
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
     <div className="space-y-2 rounded border bg-white p-3">
-      <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} className="w-full rounded border p-2" />
-      <input value={location} onChange={(e) => setLocation(e.target.value)} className="w-full rounded border p-2" />
-      <select value={numFields} onChange={(e) => setNumFields(Number(e.target.value) as 1 | 2)} className="w-full rounded border p-2">
-        <option value={1}>1</option><option value={2}>2</option>
+      <input
+        type="datetime-local"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        className="w-full rounded border p-2"
+      />
+      <input
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        className="w-full rounded border p-2"
+      />
+      <select
+        value={numFields}
+        onChange={(e) => setNumFields(Number(e.target.value) as 1 | 2)}
+        className="w-full rounded border p-2"
+      >
+        <option value={1}>1</option>
+        <option value={2}>2</option>
       </select>
-      <input type="number" min={0} value={price} onChange={(e) => setPrice(Number(e.target.value))} className="w-full rounded border p-2" />
-      <input type="url" value={link} onChange={(e) => setLink(e.target.value)} className="w-full rounded border p-2" />
-      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full rounded border p-2" />
+      <input
+        type="number"
+        min={0}
+        value={price}
+        onChange={(e) => setPrice(Number(e.target.value))}
+        className="w-full rounded border p-2"
+      />
+      <input
+        type="url"
+        value={link}
+        onChange={(e) => setLink(e.target.value)}
+        className="w-full rounded border p-2"
+      />
+      <textarea
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        className="w-full rounded border p-2"
+      />
       <div className="flex gap-2">
-        <button disabled={busy} onClick={save} className="rounded bg-slate-900 px-3 py-1 text-white">{t("common.save")}</button>
-        <button onClick={() => setOpen(false)} className="px-3 py-1">{t("common.cancel")}</button>
+        <button
+          disabled={busy}
+          onClick={save}
+          className="rounded bg-slate-900 px-3 py-1 text-white"
+        >
+          {t("common.save")}
+        </button>
+        <button onClick={() => setOpen(false)} className="px-3 py-1">
+          {t("common.cancel")}
+        </button>
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
@@ -3519,6 +3942,7 @@ git commit -m "feat: admin close/reopen/cancel/edit match"
 ### Task 34: Users list + admin toggle
 
 **Files:**
+
 - Create: `src/pages/admin/UsersList.tsx`
 - Modify: `src/App.tsx` (add route)
 
@@ -3552,7 +3976,10 @@ export function UsersListPage() {
       <h2 className="text-xl font-bold">{t("admin.users")}</h2>
       <ul className="space-y-1">
         {rows.map((r) => (
-          <li key={r.id} className="flex items-center justify-between rounded bg-white p-2 shadow-sm">
+          <li
+            key={r.id}
+            className="flex items-center justify-between rounded bg-white p-2 shadow-sm"
+          >
             <div>
               <p className="font-medium">{r.displayName}</p>
               <p className="text-xs text-slate-500">{r.email}</p>
@@ -3573,14 +4000,21 @@ export function UsersListPage() {
 
 ```tsx
 import { UsersListPage } from "./pages/admin/UsersList";
-<Route path="/admin/users" element={<UsersListPage />} />
+<Route path="/admin/users" element={<UsersListPage />} />;
 ```
 
 - [ ] **Step 3: Add header link**
 
 In `Header.tsx`, alongside the create-match link:
+
 ```tsx
-{isAdmin && <Link to="/admin/users" className="text-sm">{t("admin.users")}</Link>}
+{
+  isAdmin && (
+    <Link to="/admin/users" className="text-sm">
+      {t("admin.users")}
+    </Link>
+  );
+}
 ```
 
 - [ ] **Step 4: Commit**
@@ -3597,6 +4031,7 @@ git commit -m "feat: users list with admin toggle"
 ### Task 35: Firestore rules — users
 
 **Files:**
+
 - Modify: `firestore.rules`
 - Create: `tests/rules/firestore.rules.test.ts`
 
@@ -3646,8 +4081,13 @@ service cloud.firestore {
 - [ ] **Step 3: Write rules test for users**
 
 `tests/rules/firestore.rules.test.ts`:
+
 ```ts
-import { initializeTestEnvironment, assertSucceeds, assertFails } from "@firebase/rules-unit-testing";
+import {
+  initializeTestEnvironment,
+  assertSucceeds,
+  assertFails,
+} from "@firebase/rules-unit-testing";
 import fs from "fs";
 import path from "path";
 import { describe, it, beforeAll, afterAll, beforeEach } from "vitest";
@@ -3673,7 +4113,11 @@ describe("users rules", () => {
     const ctx = env.authenticatedContext("u1");
     await assertSucceeds(
       ctx.firestore().collection("users").doc("u1").set({
-        displayName: "A", email: "a@b.c", photoURL: "", isAdmin: false, locale: "he",
+        displayName: "A",
+        email: "a@b.c",
+        photoURL: "",
+        isAdmin: false,
+        locale: "he",
       }),
     );
   });
@@ -3682,7 +4126,11 @@ describe("users rules", () => {
     const ctx = env.authenticatedContext("u1");
     await assertFails(
       ctx.firestore().collection("users").doc("u1").set({
-        displayName: "A", email: "a@b.c", photoURL: "", isAdmin: true, locale: "he",
+        displayName: "A",
+        email: "a@b.c",
+        photoURL: "",
+        isAdmin: true,
+        locale: "he",
       }),
     );
   });
@@ -3690,7 +4138,11 @@ describe("users rules", () => {
   it("allows self-update of locale only", async () => {
     await env.withSecurityRulesDisabled(async (c) =>
       c.firestore().collection("users").doc("u1").set({
-        displayName: "A", email: "a@b.c", photoURL: "", isAdmin: false, locale: "he",
+        displayName: "A",
+        email: "a@b.c",
+        photoURL: "",
+        isAdmin: false,
+        locale: "he",
       }),
     );
     const ctx = env.authenticatedContext("u1");
@@ -3704,7 +4156,9 @@ describe("users rules", () => {
       await c.firestore().collection("users").doc("u2").set({ isAdmin: false });
     });
     const adminCtx = env.authenticatedContext("admin1");
-    await assertSucceeds(adminCtx.firestore().collection("users").doc("u2").update({ isAdmin: true }));
+    await assertSucceeds(
+      adminCtx.firestore().collection("users").doc("u2").update({ isAdmin: true }),
+    );
   });
 });
 ```
@@ -3715,6 +4169,7 @@ describe("users rules", () => {
 firebase emulators:start &
 npm test tests/rules/firestore.rules.test.ts
 ```
+
 Expected: all assertions pass.
 
 - [ ] **Step 5: Commit**
@@ -3729,12 +4184,14 @@ git commit -m "feat(rules): production users rules"
 ### Task 36: Firestore rules — matches
 
 **Files:**
+
 - Modify: `firestore.rules`
 - Modify: `tests/rules/firestore.rules.test.ts`
 
 - [ ] **Step 1: Add rules block for matches**
 
 Inside the `match /databases/{database}/documents {` block, after users:
+
 ```
 match /matches/{matchId} {
   allow read: if isSignedIn();
@@ -3745,6 +4202,7 @@ match /matches/{matchId} {
 - [ ] **Step 2: Add tests**
 
 Append to the rules test file:
+
 ```ts
 describe("matches rules", () => {
   it("any signed-in user can read matches", async () => {
@@ -3778,6 +4236,7 @@ describe("matches rules", () => {
 ```bash
 npm test tests/rules/firestore.rules.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 4: Commit**
@@ -3792,12 +4251,14 @@ git commit -m "feat(rules): matches rules"
 ### Task 37: Firestore rules — participants
 
 **Files:**
+
 - Modify: `firestore.rules`
 - Modify: `tests/rules/firestore.rules.test.ts`
 
 - [ ] **Step 1: Add rules for participants**
 
 Inside the matches block, nest:
+
 ```
 match /matches/{matchId}/participants/{partId} {
   allow read: if isSignedIn();
@@ -3826,6 +4287,7 @@ match /matches/{matchId}/participants/{partId} {
 - [ ] **Step 2: Add tests**
 
 Append:
+
 ```ts
 describe("participants rules", () => {
   beforeEach(async () => {
@@ -3840,8 +4302,14 @@ describe("participants rules", () => {
     const ctx = env.authenticatedContext("u1");
     await assertSucceeds(
       ctx.firestore().collection("matches").doc("m1").collection("participants").doc("u1").set({
-        paidByUid: "u1", paidByName: "U", isGuest: false, guestName: null,
-        team: null, verified: false, verifiedBy: null, paidAt: new Date(),
+        paidByUid: "u1",
+        paidByName: "U",
+        isGuest: false,
+        guestName: null,
+        team: null,
+        verified: false,
+        verifiedBy: null,
+        paidAt: new Date(),
       }),
     );
   });
@@ -3850,8 +4318,14 @@ describe("participants rules", () => {
     const ctx = env.authenticatedContext("u1");
     await assertFails(
       ctx.firestore().collection("matches").doc("m1").collection("participants").doc("other").set({
-        paidByUid: "u1", paidByName: "U", isGuest: false, guestName: null,
-        team: null, verified: false, verifiedBy: null, paidAt: new Date(),
+        paidByUid: "u1",
+        paidByName: "U",
+        isGuest: false,
+        guestName: null,
+        team: null,
+        verified: false,
+        verifiedBy: null,
+        paidAt: new Date(),
       }),
     );
   });
@@ -3860,8 +4334,14 @@ describe("participants rules", () => {
     const ctx = env.authenticatedContext("u1");
     await assertSucceeds(
       ctx.firestore().collection("matches").doc("m1").collection("participants").doc("g1").set({
-        paidByUid: "u1", paidByName: "U", isGuest: true, guestName: "Bob",
-        team: null, verified: false, verifiedBy: null, paidAt: new Date(),
+        paidByUid: "u1",
+        paidByName: "U",
+        isGuest: true,
+        guestName: "Bob",
+        team: null,
+        verified: false,
+        verifiedBy: null,
+        paidAt: new Date(),
       }),
     );
   });
@@ -3890,8 +4370,12 @@ describe("participants rules", () => {
     );
     const userCtx = env.authenticatedContext("u1");
     const adminCtx = env.authenticatedContext("admin1");
-    await assertFails(userCtx.firestore().doc("matches/m1/participants/u1").update({ verified: true }));
-    await assertSucceeds(adminCtx.firestore().doc("matches/m1/participants/u1").update({ verified: true }));
+    await assertFails(
+      userCtx.firestore().doc("matches/m1/participants/u1").update({ verified: true }),
+    );
+    await assertSucceeds(
+      adminCtx.firestore().doc("matches/m1/participants/u1").update({ verified: true }),
+    );
   });
 });
 ```
@@ -3901,6 +4385,7 @@ describe("participants rules", () => {
 ```bash
 npm test tests/rules/firestore.rules.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 4: Note about transactions**
@@ -3933,6 +4418,7 @@ Update tests for matches block to cover: a regular user can `update` only `paidC
 ```bash
 npm test tests/rules/firestore.rules.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 6: Commit**
@@ -3947,15 +4433,26 @@ git commit -m "feat(rules): participants rules + matches transactional updates"
 ### Task 38: End-to-end emulator smoke test of full flow
 
 **Files:**
+
 - Create: `tests/e2e/joinFlow.test.ts`
 
 - [ ] **Step 1: Write test that exercises the actual security rules + transactions**
 
 `tests/e2e/joinFlow.test.ts`:
+
 ```ts
 import { describe, it, expect, beforeEach } from "vitest";
 import { initializeTestEnvironment } from "@firebase/rules-unit-testing";
-import { addDoc, collection, doc, getDoc, runTransaction, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
 import fs from "fs";
 import path from "path";
 
@@ -3966,18 +4463,30 @@ beforeEach(async () => {
     projectId: "e2e-join",
     firestore: {
       rules: fs.readFileSync(path.resolve(__dirname, "../../firestore.rules"), "utf8"),
-      host: "localhost", port: 8080,
+      host: "localhost",
+      port: 8080,
     },
   });
   await env.clearFirestore();
   await env.withSecurityRulesDisabled(async (c) => {
     await c.firestore().collection("users").doc("u1").set({ isAdmin: false });
-    await c.firestore().collection("matches").doc("m1").set({
-      date: Timestamp.fromMillis(Date.now() + 60_000),
-      location: "X", numFields: 1, playerLimit: 12,
-      pricePerPlayer: 0, paymentLink: "", notes: "",
-      status: "open", paidCount: 0, createdBy: "admin1", createdAt: Timestamp.now(),
-    });
+    await c
+      .firestore()
+      .collection("matches")
+      .doc("m1")
+      .set({
+        date: Timestamp.fromMillis(Date.now() + 60_000),
+        location: "X",
+        numFields: 1,
+        playerLimit: 12,
+        pricePerPlayer: 0,
+        paymentLink: "",
+        notes: "",
+        status: "open",
+        paidCount: 0,
+        createdBy: "admin1",
+        createdAt: Timestamp.now(),
+      });
   });
 });
 
@@ -3988,8 +4497,14 @@ describe("e2e: regular user can join via transaction", () => {
       const matchSnap = await tx.get(doc(u1.firestore() as any, "matches/m1"));
       const data: any = matchSnap.data();
       tx.set(doc(u1.firestore() as any, "matches/m1/participants/u1"), {
-        paidByUid: "u1", paidByName: "U", isGuest: false, guestName: null,
-        team: null, verified: false, verifiedBy: null, paidAt: serverTimestamp(),
+        paidByUid: "u1",
+        paidByName: "U",
+        isGuest: false,
+        guestName: null,
+        team: null,
+        verified: false,
+        verifiedBy: null,
+        paidAt: serverTimestamp(),
       });
       tx.update(doc(u1.firestore() as any, "matches/m1"), { paidCount: data.paidCount + 1 });
     });
@@ -4006,6 +4521,7 @@ describe("e2e: regular user can join via transaction", () => {
 ```bash
 npm test tests/e2e/joinFlow.test.ts
 ```
+
 Expected: PASS.
 
 - [ ] **Step 3: Commit**
@@ -4026,6 +4542,7 @@ This task is mostly **manual** (Firebase console). Document each step in the REA
 - [ ] **Step 1: Create the Firebase project (manual)**
 
 In the Firebase console:
+
 1. New project → name `vamos-kaduregel` (or similar)
 2. Disable Google Analytics (optional, free tier-friendly)
 3. Build → Authentication → Sign-in method → enable Google
@@ -4049,6 +4566,7 @@ In Firebase console → Project settings → General → Your apps → Web app (
 ```bash
 npm run deploy:rules
 ```
+
 Expected: success.
 
 - [ ] **Step 5: Bootstrap the first admin**
@@ -4060,6 +4578,7 @@ In the Firebase console → Firestore Database → users collection → find you
 ```bash
 npm run deploy:hosting
 ```
+
 Expected: deploy URL printed. Open it, sign in, verify you can create a match.
 
 - [ ] **Step 7: Add the deploy URL to repo settings (manual on GitHub)**
@@ -4073,11 +4592,12 @@ In the repo's About section, paste the live URL.
 ### Task 40: README with setup + run + deploy instructions
 
 **Files:**
+
 - Create: `README.md`
 
 - [ ] **Step 1: Write `README.md`**
 
-```markdown
+````markdown
 # Vamos Kaduregel
 
 Web app for organizing weekly Thursday soccer games for our friends group.
@@ -4111,6 +4631,7 @@ firebase emulators:start
 # Terminal 2
 VITE_USE_FIREBASE_EMULATORS=true npm run dev
 ```
+````
 
 The app is at http://localhost:5173. Emulator UI at http://localhost:4000.
 
@@ -4147,36 +4668,37 @@ profile, then the browser, then defaults to `he`. Switch in the header.
   participants first.
 - **Refunds are not tracked in the app.** When an admin cancels a participant,
   reconciliation happens out-of-band in the payment app.
-```
+
+````
 
 - [ ] **Step 2: Commit**
 
 ```bash
 git add README.md
 git commit -m "docs: project README"
-```
+````
 
 ---
 
 ## Spec Coverage Map (self-review)
 
-| Spec section | Implemented in |
-|---|---|
-| Stack & cost | Tasks 1–6 |
-| Roles | Task 14 (user doc), Task 27/29 (isAdmin checks) |
-| `users/{uid}` | Task 14, Task 35 (rules) |
-| `matches/{matchId}` | Task 17 (type), Task 30 (create), Task 33 (status/edit) |
-| `matches/.../participants/{id}` | Task 17, Tasks 23–26 |
-| Race-safe joining | Tasks 23, 24, 25 |
-| Race-safe cancelling | Task 26 |
-| Cancellation rules | Task 26 (transaction), Task 27 (UI permissions), Task 37 (rules) |
-| Security rules | Tasks 35–37 |
-| i18n | Tasks 8–10 |
-| RTL | Task 9 |
-| Responsive design | Task 28 (BottomSheet), Tailwind across all components |
-| Player UX (login/home/pay/cancel/past) | Tasks 13, 16, 21, 22, 27, 28 |
-| Admin UX (create/manage/verify/teams/users) | Tasks 30–34 |
-| Out-of-band setup | Task 39 (Firebase console), Task 40 (README) |
+| Spec section                                | Implemented in                                                   |
+| ------------------------------------------- | ---------------------------------------------------------------- |
+| Stack & cost                                | Tasks 1–6                                                        |
+| Roles                                       | Task 14 (user doc), Task 27/29 (isAdmin checks)                  |
+| `users/{uid}`                               | Task 14, Task 35 (rules)                                         |
+| `matches/{matchId}`                         | Task 17 (type), Task 30 (create), Task 33 (status/edit)          |
+| `matches/.../participants/{id}`             | Task 17, Tasks 23–26                                             |
+| Race-safe joining                           | Tasks 23, 24, 25                                                 |
+| Race-safe cancelling                        | Task 26                                                          |
+| Cancellation rules                          | Task 26 (transaction), Task 27 (UI permissions), Task 37 (rules) |
+| Security rules                              | Tasks 35–37                                                      |
+| i18n                                        | Tasks 8–10                                                       |
+| RTL                                         | Task 9                                                           |
+| Responsive design                           | Task 28 (BottomSheet), Tailwind across all components            |
+| Player UX (login/home/pay/cancel/past)      | Tasks 13, 16, 21, 22, 27, 28                                     |
+| Admin UX (create/manage/verify/teams/users) | Tasks 30–34                                                      |
+| Out-of-band setup                           | Task 39 (Firebase console), Task 40 (README)                     |
 
 No placeholders. No "TBD" or "TODO" left in steps. Type signatures and method names are consistent across tasks (`joinMatch`, `addGuest`, `cancelParticipant`, `verifyParticipant`, `assignTeam`, `setMatchStatus`, `updateMatch`, `createMatch`).
 
