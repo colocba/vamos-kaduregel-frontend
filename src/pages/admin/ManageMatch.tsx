@@ -5,6 +5,8 @@ import { useParticipants } from "../../matches/hooks/useParticipants";
 import { MatchInfo } from "../../components/MatchInfo";
 import { verifyParticipant } from "../../matches/api/verifyParticipant";
 import { cancelParticipant } from "../../matches/api/cancelParticipant";
+import { assignTeam } from "../../matches/api/assignTeam";
+import { teamCount } from "../../matches/helpers/teamCount";
 import { useAuth } from "../../auth/useAuth";
 
 export function ManageMatchPage() {
@@ -17,6 +19,8 @@ export function ManageMatchPage() {
   if (loading) return <p className="p-4">{t("common.loading")}</p>;
   if (!match || auth.status !== "signedIn") return <p className="p-4">404</p>;
   const uid = auth.user.uid;
+  const teams = teamCount(match.numFields);
+  const teamOptions = Array.from({ length: teams }, (_, i) => i + 1);
 
   return (
     <main className="mx-auto max-w-2xl space-y-4 p-4">
@@ -46,13 +50,36 @@ export function ManageMatchPage() {
                   : p.paidByName}
               </span>
             </div>
-            <button
-              type="button"
-              className="text-sm text-red-600"
-              onClick={() => cancelParticipant({ matchId: match.id, participantId: p.id })}
-            >
-              {t("common.cancel")}
-            </button>
+            <div className="flex items-center gap-2">
+              <select
+                value={p.team ?? ""}
+                onChange={(e) =>
+                  assignTeam({
+                    matchId: match.id,
+                    participantId: p.id,
+                    team:
+                      e.target.value === ""
+                        ? null
+                        : (Number(e.target.value) as 1 | 2 | 3 | 4),
+                  })
+                }
+                className="rounded border p-1 text-sm"
+              >
+                <option value="">—</option>
+                {teamOptions.map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="text-sm text-red-600"
+                onClick={() => cancelParticipant({ matchId: match.id, participantId: p.id })}
+              >
+                {t("common.cancel")}
+              </button>
+            </div>
           </li>
         ))}
       </ul>
