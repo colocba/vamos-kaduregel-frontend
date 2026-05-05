@@ -33,7 +33,7 @@ describeIfEmu("cancelParticipant", () => {
     const ref = await addDoc(collection(db, "matches"), {
       date: Timestamp.fromMillis(Date.now() + 60_000),
       location: "X",
-      numFields: 1,
+      numTeams: 2,
       playerLimit: 12,
       pricePerPlayer: 0,
       paymentLink: "",
@@ -63,7 +63,7 @@ describeIfEmu("cancelParticipant", () => {
     const ref = await addDoc(collection(db, "matches"), {
       date: Timestamp.fromMillis(Date.now() + 60_000),
       location: "X",
-      numFields: 1,
+      numTeams: 2,
       playerLimit: 1,
       pricePerPlayer: 0,
       paymentLink: "",

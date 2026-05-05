@@ -17,7 +17,8 @@ export function CreateMatchPage() {
   const navigate = useNavigate();
   const [date, setDate] = useState(defaultDateISO());
   const [location, setLocation] = useState("");
-  const [numFields, setNumFields] = useState<1 | 2>(2);
+  const [numTeams, setNumTeams] = useState(4);
+  const [playerLimit, setPlayerLimit] = useState(24);
   const [price, setPrice] = useState(0);
   const [link, setLink] = useState("");
   const [notes, setNotes] = useState("");
@@ -35,13 +36,14 @@ export function CreateMatchPage() {
       const id = await createMatch({
         date: new Date(date),
         location,
-        numFields,
+        numTeams,
+        playerLimit,
         pricePerPlayer: price,
         paymentLink: link,
         notes,
         createdBy: auth.user.uid,
       });
-      navigate(`/admin/match/${id}`);
+      navigate(`/match/${id}`);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -50,75 +52,92 @@ export function CreateMatchPage() {
   }
 
   return (
-    <main className="mx-auto max-w-md space-y-3 p-4">
-      <h2 className="text-xl font-bold">{t("admin.createMatch")}</h2>
-      <form onSubmit={submit} className="space-y-3">
+    <main className="mx-auto w-full max-w-md px-4 py-5 sm:px-6 sm:py-8">
+      <h2 className="mb-4 font-display text-2xl font-extrabold tracking-tight text-ink">
+        {t("admin.createMatch")}
+      </h2>
+      <form onSubmit={submit} className="surface space-y-4 p-5 sm:p-6">
         <label className="block">
-          <span className="text-sm">{t("admin.location")}</span>
+          <span className="label-text">{t("admin.location")}</span>
           <input
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             required
-            className="mt-1 w-full rounded border p-2"
+            className="input"
           />
         </label>
         <label className="block">
-          <span className="text-sm">Date</span>
+          <span className="label-text">Date</span>
           <input
             type="datetime-local"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
-            className="mt-1 w-full rounded border p-2"
+            className="input"
           />
         </label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block">
+            <span className="label-text">{t("admin.numTeams")}</span>
+            <input
+              type="number"
+              min={1}
+              value={numTeams}
+              onChange={(e) => setNumTeams(Number(e.target.value))}
+              required
+              className="input"
+            />
+          </label>
+          <label className="block">
+            <span className="label-text">{t("admin.numPlayers")}</span>
+            <input
+              type="number"
+              min={1}
+              value={playerLimit}
+              onChange={(e) => setPlayerLimit(Number(e.target.value))}
+              required
+              className="input"
+            />
+          </label>
+        </div>
         <label className="block">
-          <span className="text-sm">{t("admin.fields")}</span>
-          <select
-            value={numFields}
-            onChange={(e) => setNumFields(Number(e.target.value) as 1 | 2)}
-            className="mt-1 w-full rounded border p-2"
-          >
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-          </select>
-        </label>
-        <label className="block">
-          <span className="text-sm">{t("admin.price")}</span>
+          <span className="label-text">{t("admin.price")}</span>
           <input
             type="number"
             min={0}
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
             required
-            className="mt-1 w-full rounded border p-2"
+            className="input"
           />
         </label>
         <label className="block">
-          <span className="text-sm">{t("admin.paymentLink")}</span>
+          <span className="label-text">{t("admin.paymentLink")}</span>
           <input
             type="url"
             value={link}
             onChange={(e) => setLink(e.target.value)}
             required
-            className="mt-1 w-full rounded border p-2"
+            className="input"
           />
         </label>
         <label className="block">
-          <span className="text-sm">{t("admin.notes")}</span>
+          <span className="label-text">{t("admin.notes")}</span>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="mt-1 w-full rounded border p-2"
+            rows={3}
+            className="input"
           />
         </label>
-        <button
-          disabled={busy}
-          className="w-full rounded bg-slate-900 p-3 text-white disabled:opacity-50"
-        >
+        <button disabled={busy} className="btn-primary w-full">
           {t("common.save")}
         </button>
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && (
+          <p className="rounded-xl border border-rose-200 bg-rose-50 p-2 text-sm text-rose-700">
+            {error}
+          </p>
+        )}
       </form>
     </main>
   );

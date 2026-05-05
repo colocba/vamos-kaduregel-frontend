@@ -9,7 +9,8 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase/client";
-import type { Match, MatchDoc } from "../../types/match";
+import type { Match } from "../../types/match";
+import { normalizeMatchDoc } from "../helpers/normalizeMatch";
 
 export type UseNextMatchResult = { loading: boolean; match: Match | null };
 
@@ -31,7 +32,7 @@ export function useNextMatch(): UseNextMatchResult {
       const first = snap.docs[0];
       setState({
         loading: false,
-        match: first ? { id: first.id, ...(first.data() as MatchDoc) } : null,
+        match: first ? { id: first.id, ...normalizeMatchDoc(first.data()) } : null,
       });
     });
   }, []);

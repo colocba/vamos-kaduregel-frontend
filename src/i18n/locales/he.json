@@ -14,7 +14,20 @@
     "cancelGuest": "ביטול אורח: {{name}}",
     "guestOf": "אורח של {{name}}",
     "team": "קבוצה {{n}}",
-    "verified": "אומת"
+    "verified": "אומת",
+    "capacity": "תפוסה",
+    "roster": "שחקנים",
+    "noPlayers": "אין שחקנים עדיין",
+    "guestBadge": "אורח",
+    "teams": "קבוצות",
+    "pool": "רשימת שחקנים",
+    "saveTeams": "שמור קבוצות",
+    "resetTeams": "איפוס",
+    "buildTeamsHint": "גררו שחקנים לקבוצות. במובייל, הקליקו על שחקן ואז על קבוצה.",
+    "viewTeamsHint": "הקבוצות יופיעו כאן ברגע שהאדמין יחלק אותן.",
+    "unsaved": "שינויים לא שמורים",
+    "confirmPaid": "אשר תשלום",
+    "details": "פרטים"
   },
   "admin": {
     "createMatch": "יצירת משחק",
@@ -24,7 +37,8 @@
     "closeMatch": "סגירת רישום",
     "reopenMatch": "פתיחה מחדש",
     "cancelMatch": "ביטול משחק",
-    "fields": "מספר מגרשים",
+    "numTeams": "מספר קבוצות",
+    "numPlayers": "מספר שחקנים",
     "price": "מחיר לשחקן",
     "paymentLink": "קישור תשלום",
     "notes": "הערות",
@@ -32,5 +46,5 @@
     "editDetails": "עריכת פרטים"
   },
   "language": { "switcher": "שפה" },
-  "nav": { "past": "משחקים קודמים" }
+  "nav": { "home": "בית", "past": "משחקים קודמים", "menu": "תפריט" }
 }

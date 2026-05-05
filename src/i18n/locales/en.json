@@ -19,7 +19,20 @@
     "cancelGuest": "Cancel guest: {{name}}",
     "guestOf": "Guest of {{name}}",
     "team": "Team {{n}}",
-    "verified": "Verified"
+    "verified": "Verified",
+    "capacity": "Capacity",
+    "roster": "Roster",
+    "noPlayers": "No players yet",
+    "guestBadge": "Guest",
+    "teams": "Teams",
+    "pool": "Players pool",
+    "saveTeams": "Save teams",
+    "resetTeams": "Reset",
+    "buildTeamsHint": "Drag players into teams. On mobile, tap a player then tap a team.",
+    "viewTeamsHint": "Teams will appear here once the admin builds them.",
+    "unsaved": "Unsaved changes",
+    "confirmPaid": "Confirm paid",
+    "details": "Details"
   },
   "admin": {
     "createMatch": "Create match",
@@ -29,7 +42,8 @@
     "closeMatch": "Close sign-up",
     "reopenMatch": "Reopen",
     "cancelMatch": "Cancel match",
-    "fields": "Number of fields",
+    "numTeams": "Number of teams",
+    "numPlayers": "Number of players",
     "price": "Price per player",
     "paymentLink": "Payment link",
     "notes": "Notes",
@@ -37,5 +51,5 @@
     "editDetails": "Edit details"
   },
   "language": { "switcher": "Language" },
-  "nav": { "past": "Past matches" }
+  "nav": { "home": "Home", "past": "Past matches", "menu": "Menu" }
 }

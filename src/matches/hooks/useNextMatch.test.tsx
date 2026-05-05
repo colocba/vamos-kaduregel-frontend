@@ -33,7 +33,7 @@ describeIfEmu("useNextMatch", () => {
     await addDoc(collection(db, "matches"), {
       date: fartherFuture,
       location: "B",
-      numFields: 1,
+      numTeams: 2,
       playerLimit: 12,
       pricePerPlayer: 50,
       paymentLink: "x",
@@ -46,7 +46,7 @@ describeIfEmu("useNextMatch", () => {
     await addDoc(collection(db, "matches"), {
       date: future,
       location: "A",
-      numFields: 1,
+      numTeams: 2,
       playerLimit: 12,
       pricePerPlayer: 50,
       paymentLink: "x",

@@ -15,15 +15,18 @@ export function GuestNameModal({
   const [name, setName] = useState("");
   return (
     <BottomSheet open={open} onClose={onCancel}>
-      <h2 className="mb-3 text-lg font-semibold">{t("match.addGuest")}</h2>
+      <h2 className="font-display text-xl font-extrabold tracking-tight text-ink">
+        {t("match.addGuest")}
+      </h2>
+      <p className="mt-1 text-sm text-ash">{t("match.guestOf", { name: "" }).replace("{}", "")}</p>
       <input
         autoFocus
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full rounded border border-slate-300 p-2"
+        className="input mt-4"
       />
-      <div className="mt-4 flex justify-end gap-2">
-        <button type="button" onClick={onCancel} className="px-3 py-2">
+      <div className="mt-5 flex justify-end gap-2">
+        <button type="button" onClick={onCancel} className="btn-ghost">
           {t("common.cancel")}
         </button>
         <button
@@ -33,7 +36,7 @@ export function GuestNameModal({
             onSubmit(name.trim());
             setName("");
           }}
-          className="rounded bg-slate-900 px-3 py-2 text-white disabled:opacity-50"
+          className="btn-primary"
         >
           {t("common.save")}
         </button>

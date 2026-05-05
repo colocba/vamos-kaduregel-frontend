@@ -7,6 +7,69 @@ body,
 #root {
   height: 100%;
 }
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-paper font-body text-ink antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 0% -10%, rgba(15, 107, 69, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 110% 0%, rgba(245, 158, 11, 0.06), transparent 60%),
+    radial-gradient(rgba(11, 18, 32, 0.05) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    18px 18px;
+  background-attachment: fixed;
+  font-feature-settings: "ss01", "cv11";
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-display tracking-tight;
+}
+
+@layer components {
+  .surface {
+    @apply rounded-2xl border border-line bg-white/90 shadow-card backdrop-blur-sm;
+  }
+  .surface-tight {
+    @apply rounded-xl border border-line bg-white shadow-card;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-2.5 py-0.5 text-xs font-medium tracking-wide;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pitch-500;
+  }
+  .btn-primary {
+    @apply btn bg-pitch-700 text-white shadow-ring hover:bg-pitch-800 active:translate-y-px;
+  }
+  .btn-secondary {
+    @apply btn border border-pitch-700/30 bg-white text-pitch-800 hover:bg-pitch-50 active:translate-y-px;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-ink hover:bg-ink/5;
+  }
+  .btn-danger {
+    @apply btn border border-rose-200 bg-white text-rose-700 hover:bg-rose-50;
+  }
+  .btn-stadium {
+    @apply btn bg-stadium-500 text-ink shadow-ring hover:bg-stadium-400 active:translate-y-px;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm text-ink shadow-sm placeholder:text-ash-soft focus:border-pitch-500 focus:outline-none focus:ring-2 focus:ring-pitch-200;
+  }
+  .label-text {
+    @apply mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-ash;
+  }
+}
+
+[dir="rtl"] body {
+  font-feature-settings: normal;
 }

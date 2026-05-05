@@ -7,6 +7,34 @@ import { MatchInfo } from "../components/MatchInfo";
 import { PayButtons } from "../components/PayButtons";
 import { RosterList } from "../components/RosterList";
 
+function PageShell({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="mx-auto w-full max-w-2xl space-y-4 px-4 py-5 sm:px-6 sm:py-8">{children}</main>
+  );
+}
+
+function LoadingPulse() {
+  return (
+    <div className="surface h-44 animate-pulse bg-gradient-to-br from-white to-paper" aria-hidden />
+  );
+}
+
+function EmptyState({ title }: { title: string }) {
+  return (
+    <div className="surface flex flex-col items-center justify-center px-6 py-14 text-center">
+      <span
+        aria-hidden
+        className="font-display text-5xl"
+        style={{ filter: "saturate(0.7)" }}
+      >
+        ⚽
+      </span>
+      <p className="mt-3 font-display text-xl font-extrabold tracking-tight text-ink">{title}</p>
+      <p className="mt-1 text-sm text-ash">— —</p>
+    </div>
+  );
+}
+
 export function HomePage() {
   const { t } = useTranslation();
   const auth = useAuth();
@@ -14,8 +42,20 @@ export function HomePage() {
   const { loading, match } = useNextMatch();
   const { participants } = useParticipants(match?.id ?? null);
 
-  if (loading) return <p className="p-4">{t("common.loading")}</p>;
-  if (!match) return <p className="p-4 text-center text-slate-600">{t("match.noUpcoming")}</p>;
+  if (loading) {
+    return (
+      <PageShell>
+        <LoadingPulse />
+      </PageShell>
+    );
+  }
+  if (!match) {
+    return (
+      <PageShell>
+        <EmptyState title={t("match.noUpcoming")} />
+      </PageShell>
+    );
+  }
   if (auth.status !== "signedIn") return null;
 
   const uid = auth.user.uid;
@@ -23,8 +63,8 @@ export function HomePage() {
   const hasSelfEntry = participants.some((p) => p.paidByUid === uid && !p.isGuest);
 
   return (
-    <main className="mx-auto max-w-2xl space-y-4 p-4">
-      <MatchInfo match={match} />
+    <PageShell>
+      <MatchInfo match={match} linkTo={`/match/${match.id}`} />
       <PayButtons
         match={match}
         currentUid={uid}
@@ -33,6 +73,6 @@ export function HomePage() {
         hasSelfEntry={hasSelfEntry}
       />
       <RosterList match={match} participants={participants} currentUid={uid} isAdmin={isAdmin} />
-    </main>
+    </PageShell>
   );
 }

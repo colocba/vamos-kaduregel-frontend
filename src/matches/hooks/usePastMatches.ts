@@ -9,7 +9,8 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase/client";
-import type { Match, MatchDoc } from "../../types/match";
+import type { Match } from "../../types/match";
+import { normalizeMatchDoc } from "../helpers/normalizeMatch";
 
 export function usePastMatches(maxItems = 50) {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -23,7 +24,7 @@ export function usePastMatches(maxItems = 50) {
       limit(maxItems),
     );
     return onSnapshot(q, (snap) => {
-      setMatches(snap.docs.map((d) => ({ id: d.id, ...(d.data() as MatchDoc) })));
+      setMatches(snap.docs.map((d) => ({ id: d.id, ...normalizeMatchDoc(d.data()) })));
       setLoading(false);
     });
   }, [maxItems]);

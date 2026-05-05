@@ -29,7 +29,7 @@ async function clearMatches() {
 const baseMatch = (overrides: Record<string, unknown> = {}) => ({
   date: Timestamp.fromMillis(Date.now() + 60_000),
   location: "Field A",
-  numFields: 1 as const,
+  numTeams: 2 as const,
   playerLimit: 12,
   pricePerPlayer: 50,
   paymentLink: "https://pay/x",

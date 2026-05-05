@@ -1,12 +1,12 @@
 import { addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/client";
 import type { MatchDoc } from "../../types/match";
-import { deriveLimit } from "../helpers/deriveLimit";
 
 export type CreateMatchInput = {
   date: Date;
   location: string;
-  numFields: 1 | 2;
+  numTeams: number;
+  playerLimit: number;
   pricePerPlayer: number;
   paymentLink: string;
   notes: string;
@@ -17,8 +17,8 @@ export async function createMatch(input: CreateMatchInput): Promise<string> {
   const docData: Omit<MatchDoc, "createdAt"> & { createdAt: ReturnType<typeof serverTimestamp> } = {
     date: Timestamp.fromDate(input.date),
     location: input.location,
-    numFields: input.numFields,
-    playerLimit: deriveLimit(input.numFields),
+    numTeams: input.numTeams,
+    playerLimit: input.playerLimit,
     pricePerPlayer: input.pricePerPlayer,
     paymentLink: input.paymentLink,
     notes: input.notes,

@@ -5,7 +5,7 @@ export type MatchStatus = "open" | "closed" | "cancelled";
 export type MatchDoc = {
   date: Timestamp;
   location: string;
-  numFields: 1 | 2;
+  numTeams: number;
   playerLimit: number;
   pricePerPlayer: number;
   paymentLink: string;

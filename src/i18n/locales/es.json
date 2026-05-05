@@ -19,7 +19,20 @@
     "cancelGuest": "Cancelar invitado: {{name}}",
     "guestOf": "Invitado de {{name}}",
     "team": "Equipo {{n}}",
-    "verified": "Verificado"
+    "verified": "Verificado",
+    "capacity": "Cupo",
+    "roster": "Jugadores",
+    "noPlayers": "Aún no hay jugadores",
+    "guestBadge": "Invitado",
+    "teams": "Equipos",
+    "pool": "Lista de jugadores",
+    "saveTeams": "Guardar equipos",
+    "resetTeams": "Restablecer",
+    "buildTeamsHint": "Arrastrá jugadores a los equipos. En el móvil, tocá un jugador y luego un equipo.",
+    "viewTeamsHint": "Los equipos aparecerán aquí cuando el admin los arme.",
+    "unsaved": "Cambios sin guardar",
+    "confirmPaid": "Confirmar pago",
+    "details": "Detalles"
   },
   "admin": {
     "createMatch": "Crear partido",
@@ -29,7 +42,8 @@
     "closeMatch": "Cerrar inscripción",
     "reopenMatch": "Reabrir",
     "cancelMatch": "Cancelar partido",
-    "fields": "Cantidad de canchas",
+    "numTeams": "Número de equipos",
+    "numPlayers": "Número de jugadores",
     "price": "Precio por jugador",
     "paymentLink": "Link de pago",
     "notes": "Notas",
@@ -37,5 +51,5 @@
     "editDetails": "Editar detalles"
   },
   "language": { "switcher": "Idioma" },
-  "nav": { "past": "Partidos anteriores" }
+  "nav": { "home": "Inicio", "past": "Partidos anteriores", "menu": "Menú" }
 }

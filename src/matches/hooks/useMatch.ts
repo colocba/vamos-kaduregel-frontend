@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/client";
-import type { Match, MatchDoc } from "../../types/match";
+import type { Match } from "../../types/match";
+import { normalizeMatchDoc } from "../helpers/normalizeMatch";
 
 export type UseMatchResult = { loading: boolean; match: Match | null };
 
@@ -16,7 +17,7 @@ export function useMatch(matchId: string | null): UseMatchResult {
     return onSnapshot(doc(db, "matches", matchId), (snap) => {
       setLoaded({
         matchId,
-        match: snap.exists() ? { id: snap.id, ...(snap.data() as MatchDoc) } : null,
+        match: snap.exists() ? { id: snap.id, ...normalizeMatchDoc(snap.data()) } : null,
       });
     });
   }, [matchId]);

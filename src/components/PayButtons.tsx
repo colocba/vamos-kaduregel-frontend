@@ -5,6 +5,28 @@ import { addGuest } from "../matches/api/addGuest";
 import type { Match } from "../types/match";
 import { GuestNameModal } from "./GuestNameModal";
 
+function ExternalIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" aria-hidden>
+      <path
+        d="M6 3h7v7M13 3L6.5 9.5M11 8.5V13H3V5h4.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PlusIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" aria-hidden>
+      <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function PayButtons({
   match,
   currentUid,
@@ -75,13 +97,14 @@ export function PayButtons({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       <a
         href={match.paymentLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="block w-full rounded bg-blue-600 px-4 py-3 text-center font-medium text-white"
+        className="btn-stadium w-full"
       >
+        <ExternalIcon />
         {t("match.openPaymentLink")}
       </a>
       {!hasSelfEntry && (
@@ -90,7 +113,7 @@ export function PayButtons({
             type="button"
             disabled={disabled}
             onClick={selfOnly}
-            className="w-full rounded bg-emerald-600 px-4 py-3 font-medium text-white disabled:opacity-50"
+            className="btn-primary w-full"
           >
             {t("match.iPaid")}
           </button>
@@ -98,8 +121,9 @@ export function PayButtons({
             type="button"
             disabled={disabled}
             onClick={() => setModal("selfPlusGuest")}
-            className="w-full rounded border border-emerald-600 px-4 py-3 font-medium text-emerald-700 disabled:opacity-50"
+            className="btn-secondary w-full"
           >
+            <PlusIcon />
             {t("match.payForGuest")}
           </button>
         </>
@@ -109,12 +133,17 @@ export function PayButtons({
           type="button"
           disabled={disabled}
           onClick={() => setModal("guestOnly")}
-          className="w-full rounded border border-slate-400 px-4 py-3 font-medium disabled:opacity-50"
+          className="btn-secondary w-full"
         >
+          <PlusIcon />
           {t("match.addGuest")}
         </button>
       )}
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="rounded-xl border border-rose-200 bg-rose-50 p-2 text-sm text-rose-700">
+          {error}
+        </p>
+      )}
 
       <GuestNameModal
         open={modal === "selfPlusGuest"}
