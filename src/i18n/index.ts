@@ -5,6 +5,7 @@ import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "../constants";
 import he from "./locales/he.json";
 import es from "./locales/es.json";
 import en from "./locales/en.json";
+import pt from "./locales/pt.json";
 
 i18n
   .use(LanguageDetector)
@@ -16,6 +17,7 @@ i18n
       he: { translation: he },
       es: { translation: es },
       en: { translation: en },
+      pt: { translation: pt },
     },
     detection: {
       order: ["localStorage", "navigator"],

@@ -4,8 +4,13 @@ import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type Locale } from "../constants";
 import { useAuth } from "../auth/useAuth";
 import { db } from "../firebase/client";
 
-const LABELS: Record<Locale, string> = { he: "עברית", es: "Español", en: "English" };
-const SHORT: Record<Locale, string> = { he: "HE", es: "ES", en: "EN" };
+const LABELS: Record<Locale, string> = {
+  he: "עברית",
+  es: "Español",
+  en: "English",
+  pt: "Português",
+};
+const SHORT: Record<Locale, string> = { he: "HE", es: "ES", en: "EN", pt: "PT" };
 
 export function LanguageSwitcher() {
   const { i18n, t } = useTranslation();
