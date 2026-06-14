@@ -16,7 +16,8 @@
     "format:check": "prettier --check .",
     "emulators": "firebase emulators:start",
     "deploy:hosting": "npm run build && firebase deploy --only hosting",
-    "deploy:rules": "firebase deploy --only firestore:rules"
+    "deploy:rules": "firebase deploy --only firestore:rules",
+    "deploy": "npm run lint && npm run test && npm run build && firebase deploy"
   },
   "dependencies": {
     "firebase": "^10.14.1",
