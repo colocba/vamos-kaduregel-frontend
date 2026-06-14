@@ -6,6 +6,7 @@ import {
   setParticipantTeams,
   type TeamAssignment,
 } from "../matches/api/setParticipantTeams";
+import { setTeamsPublished } from "../matches/api/setTeamsPublished";
 import { Avatar } from "./Avatar";
 
 type TeamId = number;
@@ -97,6 +98,7 @@ function DropZone({
   count,
   isOver,
   isAdmin,
+  isFull,
   selectedActive,
   tint,
   onActivate,
@@ -110,6 +112,7 @@ function DropZone({
   count: number;
   isOver: boolean;
   isAdmin: boolean;
+  isFull?: boolean;
   selectedActive: boolean;
   tint?: { ring: string; chip: string; halo: string };
   onActivate?: () => void;
@@ -130,7 +133,9 @@ function DropZone({
       onClick={isAdmin && selectedActive ? onActivate : undefined}
       className={`relative flex min-h-[120px] flex-col rounded-2xl border-2 ${ringColor} bg-white p-3 shadow-card transition-all ${
         isOver ? "scale-[1.01] ring-4 ring-pitch-200" : ""
-      } ${selectedActive ? "cursor-pointer hover:border-pitch-500" : ""}`}
+      } ${isFull ? "opacity-60" : ""} ${
+        selectedActive && !isFull ? "cursor-pointer hover:border-pitch-500" : ""
+      }`}
       data-team={team ?? "pool"}
       role={isAdmin ? "region" : undefined}
       aria-label={label}
@@ -163,6 +168,7 @@ export function TeamsBoard({
 }) {
   const { t } = useTranslation();
   const teams = match.numTeams;
+  const perTeamCap = Math.ceil(match.playerLimit / teams);
   const teamIds = useMemo(
     () => Array.from({ length: teams }, (_, i) => i + 1),
     [teams],
@@ -191,36 +197,73 @@ export function TeamsBoard({
 
   const dirty = participants.some((p) => stage[p.id] !== ((p.team as Slot | undefined) ?? null));
 
+  // Returns true when assigning to `target` would exceed the per-team capacity.
+  // The pool (target === null) is never capped.
+  function isTeamFull(target: Slot) {
+    if (target === null) return false;
+    return groups[`t${target}`].length >= perTeamCap;
+  }
+
+  function assign(id: string, target: Slot) {
+    const current = stage[id];
+    if (current === target) return;
+    if (isTeamFull(target)) {
+      setError(t("match.teamFull", { n: target, cap: perTeamCap }));
+      return;
+    }
+    setError(null);
+    setOverrides((prev) => ({ ...prev, [id]: target }));
+  }
+
   function handleDrop(target: Slot) {
     return (e: React.DragEvent) => {
       e.preventDefault();
       setOverTarget("none");
       const id = e.dataTransfer.getData("text/plain");
       if (!id) return;
-      const current = stage[id];
-      if (current === target) return;
-      setOverrides((prev) => ({ ...prev, [id]: target }));
+      assign(id, target);
     };
   }
 
   function handleTapAssign(target: Slot) {
     if (!selectedId) return;
-    const current = stage[selectedId];
-    if (current !== target) {
-      setOverrides((prev) => ({ ...prev, [selectedId]: target }));
-    }
+    assign(selectedId, target);
     setSelectedId(null);
   }
 
-  function handleSave() {
-    setError(null);
-    const assignments: TeamAssignment[] = participants
+  function pendingAssignments(): TeamAssignment[] {
+    return participants
       .filter((p) => stage[p.id] !== ((p.team as Slot | undefined) ?? null))
       .map((p) => ({ participantId: p.id, team: stage[p.id] }));
+  }
+
+  function handleSave() {
+    const assignments = pendingAssignments();
     if (assignments.length === 0) return;
+    setError(null);
     setBusy(true);
     setParticipantTeams(match.id, assignments)
       .then(() => setOverrides({}))
+      .catch((e: unknown) => setError((e as Error).message))
+      .finally(() => setBusy(false));
+  }
+
+  // Persist any pending changes, then reveal the teams to players.
+  function handlePublish() {
+    const assignments = pendingAssignments();
+    setError(null);
+    setBusy(true);
+    Promise.resolve(assignments.length ? setParticipantTeams(match.id, assignments) : undefined)
+      .then(() => setTeamsPublished(match.id, true))
+      .then(() => setOverrides({}))
+      .catch((e: unknown) => setError((e as Error).message))
+      .finally(() => setBusy(false));
+  }
+
+  function handleUnpublish() {
+    setError(null);
+    setBusy(true);
+    setTeamsPublished(match.id, false)
       .catch((e: unknown) => setError((e as Error).message))
       .finally(() => setBusy(false));
   }
@@ -244,7 +287,7 @@ export function TeamsBoard({
   }
 
   if (!isAdmin) {
-    const anyAssigned = participants.some((p) => p.team);
+    const anyAssigned = match.teamsPublished;
     return (
       <section className="surface p-4 sm:p-5">
         <header className="mb-3 flex items-baseline justify-between">
@@ -289,7 +332,18 @@ export function TeamsBoard({
           </h3>
           <p className="mt-1 text-xs text-ash">{t("match.buildTeamsHint")}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className={`pill ${
+              match.teamsPublished
+                ? "border-pitch-300 bg-pitch-50 text-pitch-700"
+                : "border-line bg-paper text-ash"
+            }`}
+          >
+            {match.teamsPublished
+              ? t("match.teamsPublishedBadge")
+              : t("match.teamsHiddenBadge")}
+          </span>
           {dirty && (
             <span className="pill border-stadium-400/40 bg-stadium-400/10 text-stadium-600">
               {t("match.unsaved")}
@@ -307,10 +361,29 @@ export function TeamsBoard({
             type="button"
             onClick={handleSave}
             disabled={!dirty || busy}
-            className="btn-primary px-3 py-1.5 text-xs"
+            className="btn-ghost px-3 py-1.5 text-xs"
           >
             {t("match.saveTeams")}
           </button>
+          {match.teamsPublished ? (
+            <button
+              type="button"
+              onClick={handleUnpublish}
+              disabled={busy}
+              className="btn-ghost px-3 py-1.5 text-xs"
+            >
+              {t("match.unpublishTeams")}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handlePublish}
+              disabled={busy}
+              className="btn-primary px-3 py-1.5 text-xs"
+            >
+              {t("match.publishTeams")}
+            </button>
+          )}
         </div>
       </header>
 
@@ -377,6 +450,7 @@ export function TeamsBoard({
               label={t("match.team", { n: id })}
               count={groups[`t${id}`].length}
               isAdmin
+              isFull={groups[`t${id}`].length >= perTeamCap}
               selectedActive={selectedId !== null}
               isOver={overTarget === id}
               onActivate={() => handleTapAssign(id)}

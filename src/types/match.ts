@@ -11,6 +11,7 @@ export type MatchDoc = {
   paymentLink: string;
   notes: string;
   status: MatchStatus;
+  teamsPublished: boolean;
   paidCount: number;
   createdBy: string;
   createdAt: Timestamp;

@@ -18,5 +18,6 @@ export function normalizeMatchDoc(raw: unknown): MatchDoc {
     typeof data.playerLimit === "number" && data.playerLimit > 0
       ? data.playerLimit
       : numTeams * 6;
-  return { ...(data as MatchDoc), numTeams, playerLimit };
+  const teamsPublished = data.teamsPublished === true;
+  return { ...(data as MatchDoc), numTeams, playerLimit, teamsPublished };
 }
