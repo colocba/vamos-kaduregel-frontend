@@ -23,6 +23,7 @@ export async function createMatch(input: CreateMatchInput): Promise<string> {
     paymentLink: input.paymentLink,
     notes: input.notes,
     status: "open",
+    teamsPublished: false,
     paidCount: 0,
     createdBy: input.createdBy,
     createdAt: serverTimestamp(),
